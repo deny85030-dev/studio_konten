@@ -821,7 +821,7 @@
             return null;
         }
 
-        // ===== API KEY FUNCTIONS (tanpa notifikasi di bawah) =====
+        // ===== API KEY FUNCTIONS =====
         const FALLBACK_MODELS = [
             { id: 'openrouter/free', label: 'openrouter/free' },
             { id: 'deepseek/deepseek-r1:free', label: 'deepseek-r1:free' },
@@ -1662,93 +1662,222 @@
             document.body.removeChild(a);
         }
 
+        // ========== FUNGSI RENDER ULANG (DENGAN SINKRONISASI AUDIO) ==========
+
+        // --- Konversi PCM ke AudioBuffer ---
+        function pcmToAudioBuffer(pcmData, sampleRate) {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const buffer = audioCtx.createBuffer(1, pcmData.length, sampleRate);
+            const channelData = buffer.getChannelData(0);
+            for (let i = 0; i < pcmData.length; i++) {
+                channelData[i] = pcmData[i] / 32768.0;
+            }
+            return buffer;
+        }
+
+        // --- Estimasi durasi teks (untuk WebSpeech) ---
+        function estimateDuration(text) {
+            // rata-rata 150 kata/menit → 2.5 kata/detik → 0.4 detik/kata
+            const words = text.split(/\s+/).length;
+            return Math.max(1.5, words * 0.4);
+        }
+
+        // --- FUNGSI UTAMA RENDER ---
         async function startVideoRenderingProcess() {
-            if (generatedStory.scenes.length === 0) return showToast("Buat naskah dulu!", "error");
+            if (!generatedStory.scenes || generatedStory.scenes.length === 0) {
+                showToast("Buat naskah dulu!", "error");
+                return;
+            }
+
             cancelRenderFlag = false;
             isCurrentlyRendering = true;
             recordedChunks = [];
             finalVideoBlobUrl = null;
             finalVideoBlob = null;
+
             const modal = document.getElementById('rendering-modal');
             resetRenderModalUI();
             modal.classList.remove('hidden');
-            updateRenderProgress(5, "LANGKAH 1/3 (MEMUAT)", "Memuat gambar ke memori...");
-            const preloadedImages = [];
-            for (let i = 0; i < generatedStory.scenes.length; i++) {
+            updateRenderProgress(5, "LANGKAH 1/4 (PERSIAPAN)", "Menganalisis narasi...");
+
+            const provider = document.getElementById('audio-provider-select').value;
+            const scenes = generatedStory.scenes;
+            const sceneDurations = [];       // durasi per adegan (detik)
+            const audioBuffers = [];         // buffer audio per adegan (jika Gemini)
+            let totalDuration = 0;
+
+            // 1. Dapatkan durasi dan audio buffer
+            for (let i = 0; i < scenes.length; i++) {
                 if (cancelRenderFlag) return;
-                const imgCard = document.getElementById(`sc-img-${i}`);
-                const src = imgCard ? imgCard.src : `https://placehold.co/1280x720/0a0f1d/6c5ce7?text=A${i+1}`;
-                const imgObj = new Image();
-                imgObj.crossOrigin = "anonymous";
-                imgObj.src = src;
-                await new Promise(r => { imgObj.onload = r;
-                    imgObj.onerror = r; });
-                preloadedImages.push(imgObj);
-                updateRenderProgress(5 + ((i + 1) / generatedStory.scenes.length) * 15, "LANGKAH 1/3 (MEMUAT)",
-                    `Memuat ${i+1}/${generatedStory.scenes.length}...`);
+                let dur = 0;
+                let buffer = null;
+                if (provider === 'gemini') {
+                    try {
+                        const audioData = await getGeminiTTSAudio(i, scenes[i].narration);
+                        const pcm = audioData.pcm;
+                        const sr = audioData.sampleRate;
+                        const audioBuffer = pcmToAudioBuffer(pcm, sr);
+                        dur = audioBuffer.duration;
+                        buffer = audioBuffer;
+                    } catch (e) {
+                        console.warn(`Gemini gagal untuk adegan ${i+1}, pakai estimasi.`, e);
+                        dur = estimateDuration(scenes[i].narration);
+                    }
+                } else {
+                    // WebSpeech: estimasi
+                    dur = estimateDuration(scenes[i].narration);
+                }
+                sceneDurations.push(dur);
+                audioBuffers.push(buffer);
+                totalDuration += dur;
+                updateRenderProgress(5 + ((i + 1) / scenes.length) * 15,
+                    `LANGKAH 1/4 (${i+1}/${scenes.length})`,
+                    `Durasi adegan ${i+1}: ${dur.toFixed(1)} detik`);
             }
+
             if (cancelRenderFlag) return;
-            updateRenderProgress(25, "LANGKAH 2/3 (INISIALISASI)", "Menghangatkan kanvas...");
+            updateRenderProgress(25, "LANGKAH 2/4 (AUDIO)", "Membangun aliran audio...");
+
+            // 2. Buat AudioContext dan audio stream
+            let audioCtx = null;
+            let audioDestination = null;
+            let audioStreamTrack = null;
+
+            if (provider === 'gemini' && audioBuffers.some(b => b !== null)) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                audioDestination = audioCtx.createMediaStreamDestination();
+                let startTime = audioCtx.currentTime;
+
+                for (let i = 0; i < scenes.length; i++) {
+                    const buf = audioBuffers[i];
+                    if (buf) {
+                        const source = audioCtx.createBufferSource();
+                        source.buffer = buf;
+                        source.connect(audioDestination);
+                        source.start(startTime);
+                    }
+                    startTime += sceneDurations[i];
+                }
+                audioStreamTrack = audioDestination.stream.getAudioTracks()[0];
+            }
+
+            // 3. Siapkan canvas untuk video
             const isV = document.querySelector('input[name="video-duration"]:checked').value === "short";
             renderCanvas = document.getElementById('offscreen-render-canvas');
             renderCanvas.width = isV ? 720 : 1280;
             renderCanvas.height = isV ? 1280 : 720;
             renderCtx = renderCanvas.getContext('2d');
-            recordStream = renderCanvas.captureStream(30);
-            let vOpts = { mimeType: 'video/webm;codecs=vp9' };
-            if (!MediaRecorder.isTypeSupported(vOpts.mimeType)) vOpts = { mimeType: 'video/webm;codecs=vp8' };
-            if (!MediaRecorder.isTypeSupported(vOpts.mimeType)) vOpts = { mimeType: 'video/webm' };
-            try {
-                mediaRecorder = new MediaRecorder(recordStream, vOpts);
-            } catch (e) {
-                return showToast("Perekam tidak didukung.", "error");
+
+            const canvasStream = renderCanvas.captureStream(30);
+            const videoTrack = canvasStream.getVideoTracks()[0];
+
+            // 4. Gabungkan video + audio ke dalam satu MediaStream
+            let combinedStream;
+            if (audioStreamTrack) {
+                combinedStream = new MediaStream([videoTrack, audioStreamTrack]);
+            } else {
+                combinedStream = new MediaStream([videoTrack]);
             }
+
+            // 5. Setup MediaRecorder
+            let vOpts = { mimeType: 'video/webm;codecs=vp9' };
+            if (!MediaRecorder.isTypeSupported(vOpts.mimeType)) {
+                vOpts = { mimeType: 'video/webm;codecs=vp8' };
+            }
+            if (!MediaRecorder.isTypeSupported(vOpts.mimeType)) {
+                vOpts = { mimeType: 'video/webm' };
+            }
+
+            try {
+                mediaRecorder = new MediaRecorder(combinedStream, vOpts);
+            } catch (e) {
+                showToast("Perekam tidak didukung: " + e.message, "error");
+                isCurrentlyRendering = false;
+                return;
+            }
+
             mediaRecorder.ondataavailable = e => {
                 if (e.data && e.data.size > 0) recordedChunks.push(e.data);
             };
+
             mediaRecorder.onstop = () => {
                 if (cancelRenderFlag) return;
-                updateRenderProgress(100, "LANGKAH 3/3 (SELESAI)", "Berkas final siap.");
+                updateRenderProgress(100, "SELESAI", "Berkas final siap.");
                 finalVideoBlob = new Blob(recordedChunks, { type: vOpts.mimeType });
                 finalVideoBlobUrl = URL.createObjectURL(finalVideoBlob);
                 showDownloadButtons();
-                showToast("Video Berhasil!", "success");
+                showToast("✅ Video + Audio berhasil!", "success");
+                isCurrentlyRendering = false;
             };
+
+            // 6. Mulai perekaman
             mediaRecorder.start();
-            processScenePerekaman(0, preloadedImages);
+            updateRenderProgress(30, "LANGKAH 3/4 (MEREKAM)", "Memutar adegan...");
+
+            // 7. Proses render frame sesuai durasi per adegan
+            await processScenePerekaman(0, sceneDurations, totalDuration);
+
+            // 8. Jika tidak ada audio, kita set timer untuk stop setelah totalDuration
+            if (!audioStreamTrack) {
+                setTimeout(() => {
+                    if (mediaRecorder && mediaRecorder.state === 'recording' && !cancelRenderFlag) {
+                        mediaRecorder.stop();
+                    }
+                }, totalDuration * 1000 + 500);
+            }
         }
 
-        async function processScenePerekaman(sIdx, preloadedImages) {
+        // --- FUNGSI RENDER FRAME PER ADEGAN (dengan durasi spesifik) ---
+        async function processScenePerekaman(sIdx, sceneDurations, totalDuration) {
             if (cancelRenderFlag || !isCurrentlyRendering) return;
-            const tScenes = generatedStory.scenes.length;
+            const tScenes = sceneDurations.length;
             if (sIdx >= tScenes) {
-                mediaRecorder.stop();
+                // Semua adegan selesai, stop recorder (jika belum berhenti)
+                if (mediaRecorder && mediaRecorder.state === 'recording') {
+                    mediaRecorder.stop();
+                }
                 return;
             }
-            const sData = generatedStory.scenes[sIdx];
-            const imgSource = preloadedImages[sIdx];
-            const stepNum = 25 + ((sIdx + 1) / tScenes) * 70;
-            updateRenderProgress(stepNum, `LANGKAH 3/3 (MEREKAM ${sIdx + 1}/${tScenes})`, `Animasi gambar...`);
-            let startT = performance.now();
-            let duration = 3500;
 
-            function renderFrame(time) {
+            const duration = sceneDurations[sIdx]; // detik
+            const startTime = performance.now();
+            const endTime = startTime + duration * 1000;
+
+            // Ambil gambar dari elemen img
+            const imgCard = document.getElementById(`sc-img-${sIdx}`);
+            const imgSrc = imgCard ? imgCard.src : `https://placehold.co/1280x720/0a0f1d/6c5ce7?text=A${sIdx+1}`;
+            const imgObj = new Image();
+            imgObj.crossOrigin = "anonymous";
+            imgObj.src = imgSrc;
+            await new Promise(r => { imgObj.onload = r; imgObj.onerror = r; });
+
+            const cW = renderCanvas.width;
+            const cH = renderCanvas.height;
+
+            // Animasi zoom halus selama durasi
+            function renderFrame() {
                 if (cancelRenderFlag) return;
-                const elapsed = time - startT;
+                const now = performance.now();
+                const elapsed = (now - startTime) / 1000; // detik
                 if (elapsed >= duration) {
-                    processScenePerekaman(sIdx + 1, preloadedImages);
+                    // Pindah ke adegan berikutnya
+                    const progress = 30 + ((sIdx + 1) / tScenes) * 65;
+                    updateRenderProgress(progress,
+                        `LANGKAH 3/4 (${sIdx+1}/${tScenes})`,
+                        `Durasi adegan ${sIdx+1}: ${duration.toFixed(1)} detik`);
+                    processScenePerekaman(sIdx + 1, sceneDurations, totalDuration);
                     return;
                 }
-                const cW = renderCanvas.width;
-                const cH = renderCanvas.height;
-                const scale = 1.0 + (0.05 * (elapsed / duration));
+
+                const scale = 1.0 + (0.06 * (elapsed / duration)); // zoom maks 6%
                 renderCtx.clearRect(0, 0, cW, cH);
                 renderCtx.save();
                 renderCtx.translate(cW / 2, cH / 2);
                 renderCtx.scale(scale, scale);
                 renderCtx.translate(-cW / 2, -cH / 2);
-                renderCtx.drawImage(imgSource, 0, 0, cW, cH);
+                renderCtx.drawImage(imgObj, 0, 0, cW, cH);
                 renderCtx.restore();
+
                 requestAnimationFrame(renderFrame);
             }
             requestAnimationFrame(renderFrame);
