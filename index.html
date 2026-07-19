@@ -1,122 +1,146 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Studio Konten Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'], cinzel: ['Cinzel', 'serif'] },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'] },
                     colors: {
-                        brand: { 50: '#f0fdf4', 100: '#dcfce7', 500: '#10b981', 600: '#059669', 700: '#047857', 900: '#064e3b', 950: '#022c22' },
-                        dark: { 950: '#05070f', 900: '#090d16', 800: '#111827', 700: '#1f2937', 600: '#374151' }
+                        cream: { 50: '#fdfcf8', 100: '#f8f5ee', 200: '#f0ebe0', 300: '#e8e0d0' },
+                        gold: { 400: '#c9a96e', 500: '#b8955a', 600: '#a68247' },
+                        sage: { 50: '#f5f7f3', 100: '#e8ede3', 200: '#d1dcc6', 300: '#b8c9a8' },
+                        slate: { 50: '#f8f9fa', 100: '#f1f3f5', 200: '#e9ecef', 300: '#dee2e6', 400: '#ced4da', 500: '#adb5bd', 600: '#6c757d', 700: '#495057', 800: '#343a40', 900: '#212529' }
                     }
                 }
             }
         }
     </script>
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background:#05070f; color:#f0f4f8; min-height:100vh; overflow:hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #fdfcf8; color: #212529; min-height: 100vh; overflow: hidden; }
 
+        /* SPLASH */
         #splashOverlay {
-            position: fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center;
-            background: rgba(5,7,15,0.92); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
-            transition: opacity 0.6s ease, visibility 0.6s ease; padding:20px;
+            position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center;
+            background: rgba(253,252,248,0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            transition: opacity 0.6s ease, visibility 0.6s ease; padding: 20px;
         }
-        #splashOverlay.hidden { opacity:0; visibility:hidden; pointer-events:none; }
+        #splashOverlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
         .splash-box {
-            width:100%; max-width:400px; background:#0d1423; border-radius:28px; padding:36px 30px 30px;
-            border:1px solid #1a2a4a; box-shadow:0 30px 80px rgba(0,0,0,0.9), 0 0 60px rgba(108,92,231,0.08);
-            position:relative; overflow:hidden; animation:splashPop 0.5s cubic-bezier(0.16,1,0.3,1);
+            width: 100%; max-width: 400px; background: #ffffff; border-radius: 28px; padding: 40px 32px 32px;
+            border: 1px solid #e9ecef; box-shadow: 0 20px 60px rgba(0,0,0,0.06), 0 4px 20px rgba(0,0,0,0.03);
+            position: relative; overflow: hidden; animation: splashPop 0.5s cubic-bezier(0.16,1,0.3,1);
         }
-        @keyframes splashPop { 0% { transform:scale(0.92) translateY(20px); opacity:0; } 100% { transform:scale(1) translateY(0); opacity:1; } }
-        .splash-box::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,#6c5ce7,#a855f7,#6c5ce7); background-size:200% 100%; animation:gradientMove 3s ease infinite; }
-        @keyframes gradientMove { 0% { background-position:0% 50%; } 50% { background-position:100% 50%; } 100% { background-position:0% 50%; } }
+        @keyframes splashPop { 0% { transform: scale(0.95) translateY(16px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+        .splash-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #b8955a, #c9a96e, #b8955a); background-size: 200% 100%; animation: gradientMove 3s ease infinite; }
+        @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        .splash-box .logo { text-align:center; margin-bottom:24px; }
-        .splash-box .logo .icon { width:60px; height:60px; border-radius:18px; background:linear-gradient(135deg,#6c5ce7,#a855f7); display:flex; align-items:center; justify-content:center; font-size:28px; margin:0 auto 12px; box-shadow:0 8px 30px rgba(108,92,231,0.35); }
-        .splash-box .logo h1 { font-size:22px; font-weight:800; color:#fff; }
-        .splash-box .logo p { color:#667799; font-size:13px; margin-top:2px; }
+        .splash-box .logo { text-align: center; margin-bottom: 28px; }
+        .splash-box .logo .icon { width: 64px; height: 64px; border-radius: 20px; background: linear-gradient(135deg, #b8955a, #c9a96e); display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 14px; box-shadow: 0 8px 32px rgba(184,149,90,0.25); color: #fff; }
+        .splash-box .logo h1 { font-size: 24px; font-weight: 800; color: #212529; letter-spacing: -0.5px; }
+        .splash-box .logo p { color: #6c757d; font-size: 13px; margin-top: 4px; }
 
-        .splash-box .form-group { margin-bottom:14px; }
-        .splash-box .form-group label { display:block; font-size:11px; font-weight:600; color:#667799; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:5px; }
-        .splash-box .form-group input { width:100%; padding:12px 16px; background:#080c18; border:1px solid #1a2a4a; border-radius:12px; color:#e8edf5; font-size:15px; outline:none; transition:border-color 0.3s; font-family:inherit; }
-        .splash-box .form-group input:focus { border-color:#6c5ce7; box-shadow:0 0 0 3px rgba(108,92,231,0.15); }
-        .splash-box .form-group input::placeholder { color:#445566; }
+        .splash-box .form-group { margin-bottom: 16px; }
+        .splash-box .form-group label { display: block; font-size: 11px; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .splash-box .form-group input { width: 100%; padding: 12px 16px; background: #f8f9fa; border: 1.5px solid #e9ecef; border-radius: 12px; color: #212529; font-size: 15px; outline: none; transition: border-color 0.3s, box-shadow 0.3s; font-family: inherit; }
+        .splash-box .form-group input:focus { border-color: #b8955a; box-shadow: 0 0 0 4px rgba(184,149,90,0.1); }
+        .splash-box .form-group input::placeholder { color: #adb5bd; }
 
-        .splash-box .btn-login { width:100%; padding:14px; background:linear-gradient(135deg,#6c5ce7,#a855f7); border:none; border-radius:12px; color:white; font-size:16px; font-weight:700; cursor:pointer; transition:all 0.3s; font-family:inherit; margin-top:4px; }
-        .splash-box .btn-login:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(108,92,231,0.35); }
-        .splash-box .btn-login:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+        .splash-box .btn-login { width: 100%; padding: 14px; background: linear-gradient(135deg, #b8955a, #c9a96e); border: none; border-radius: 12px; color: white; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s; font-family: inherit; margin-top: 4px; }
+        .splash-box .btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(184,149,90,0.3); }
+        .splash-box .btn-login:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-        .splash-box .error-msg { background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); border-radius:10px; padding:10px 14px; font-size:13px; color:#ef4444; display:none; margin-bottom:12px; text-align:center; }
-        .splash-box .error-msg.show { display:block; animation:shake 0.4s ease; }
-        @keyframes shake { 0%,100% { transform:translateX(0); } 25% { transform:translateX(-8px); } 75% { transform:translateX(8px); } }
+        .splash-box .error-msg { background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 10px 14px; font-size: 13px; color: #dc2626; display: none; margin-bottom: 14px; text-align: center; }
+        .splash-box .error-msg.show { display: block; animation: shake 0.4s ease; }
+        @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
 
-        .splash-box .contact-info { margin-top:18px; padding-top:14px; border-top:1px solid #1a2a4a; text-align:center; font-size:13px; color:#667799; }
-        .splash-box .contact-info a { color:#a855f7; text-decoration:none; font-weight:600; }
-        .splash-box .contact-info a:hover { text-decoration:underline; }
-        .splash-box .version { text-align:center; font-size:10px; color:#334455; margin-top:14px; letter-spacing:0.5px; }
+        .splash-box .contact-info { margin-top: 20px; padding-top: 16px; border-top: 1px solid #e9ecef; text-align: center; font-size: 13px; color: #6c757d; }
+        .splash-box .contact-info a { color: #b8955a; text-decoration: none; font-weight: 600; }
+        .splash-box .contact-info a:hover { text-decoration: underline; }
+        .splash-box .version { text-align: center; font-size: 10px; color: #adb5bd; margin-top: 16px; letter-spacing: 0.5px; }
 
-        #mainApp { display:none; width:100%; height:100vh; overflow:hidden; }
-        #mainApp.visible { display:flex; }
+        #mainApp { display: none; width: 100%; height: 100vh; overflow: hidden; }
+        #mainApp.visible { display: flex; }
 
-        ::-webkit-scrollbar { width:5px; height:5px; }
-        ::-webkit-scrollbar-track { background:transparent; }
-        ::-webkit-scrollbar-thumb { background:#1f2937; border-radius:10px; }
-        ::-webkit-scrollbar-thumb:hover { background:#374151; }
-        .no-scrollbar::-webkit-scrollbar { display:none; }
-        .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #dee2e6; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ced4da; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        .tab-content { display:none; animation:fadeIn 0.4s cubic-bezier(0.16,1,0.3,1); }
-        .tab-content.active { display:block; }
-        @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+        .tab-content { display: none; animation: fadeIn 0.4s cubic-bezier(0.16,1,0.3,1); }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        .glass-panel { background:rgba(9,13,22,0.75); backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,0.03); }
-        .loader { border:3px solid rgba(255,255,255,0.1); border-top:3px solid #10b981; border-radius:50%; width:22px; height:22px; animation:spin 0.8s linear infinite; display:inline-block; }
-        @keyframes spin { 0% { transform:rotate(0deg); } 100% { transform:rotate(360deg); } }
-        @keyframes kenBurns { 0% { transform:scale(1) translate(0,0); } 50% { transform:scale(1.08) translate(-0.5%,0.5%); } 100% { transform:scale(1.03) translate(0.5%,-0.5%); } }
-        .animate-kenburns { animation:kenBurns 12s ease-in-out infinite alternate; }
+        .glass-panel { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); border: 1px solid rgba(0,0,0,0.04); }
+        .loader { border: 3px solid rgba(0,0,0,0.06); border-top: 3px solid #b8955a; border-radius: 50%; width: 22px; height: 22px; animation: spin 0.8s linear infinite; display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes kenBurns { 0% { transform: scale(1) translate(0,0); } 50% { transform: scale(1.06) translate(-0.5%,0.5%); } 100% { transform: scale(1.02) translate(0.5%,-0.5%); } }
+        .animate-kenburns { animation: kenBurns 12s ease-in-out infinite alternate; }
 
-        .api-key-input { background:#0d1423; border:1px solid #1a2a4a; border-radius:10px; padding:8px 12px; color:#e8edf5; font-size:11px; font-family:monospace; width:100%; outline:none; }
-        .api-key-input:focus { border-color:#6c5ce7; }
-        .api-status-dot { width:8px; height:8px; border-radius:50%; display:inline-block; flex-shrink:0; }
-        .api-status-dot.on { background:#10b981; }
-        .api-status-dot.off { background:#ef4444; }
-        .api-status-dot.testing { background:#fbbf24; animation:pulse 0.8s infinite; }
-        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+        .api-key-input { background: #f8f9fa; border: 1.5px solid #e9ecef; border-radius: 10px; padding: 8px 12px; color: #212529; font-size: 11px; font-family: monospace; width: 100%; outline: none; transition: border-color 0.3s; }
+        .api-key-input:focus { border-color: #b8955a; box-shadow: 0 0 0 3px rgba(184,149,90,0.08); }
+        .api-status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+        .api-status-dot.on { background: #22c55e; }
+        .api-status-dot.off { background: #ef4444; }
+        .api-status-dot.testing { background: #eab308; animation: pulse 0.8s infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-        .btn-download { background:linear-gradient(135deg,#10b981,#059669); transition:all 0.3s; }
-        .btn-download:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(16,185,129,0.35); }
-        .btn-purple { background:linear-gradient(135deg,#6c5ce7,#a855f7); transition:all 0.3s; }
-        .btn-purple:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(108,92,231,0.35); }
+        .btn-download { background: linear-gradient(135deg, #22c55e, #16a34a); transition: all 0.3s; color: #fff; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(34,197,94,0.3); }
+        .btn-gold { background: linear-gradient(135deg, #b8955a, #c9a96e); transition: all 0.3s; color: #fff; }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(184,149,90,0.3); }
 
-        #toast-container { position:fixed; bottom:20px; right:20px; z-index:99999; display:flex; flex-direction:column; gap:8px; pointer-events:none; width:100%; max-width:380px; margin-left:auto; }
-        .toast-item { pointer-events:auto; padding:12px 18px; border-radius:14px; background:rgba(13,20,35,0.92); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.06); color:#e8edf5; font-size:13px; font-weight:500; display:flex; align-items:center; gap:12px; box-shadow:0 10px 40px rgba(0,0,0,0.6); transform:translateX(calc(100% + 30px)); opacity:0; transition:all 0.4s cubic-bezier(0.16,1,0.3,1); }
-        .toast-item.show { transform:translateX(0); opacity:1; }
-        .toast-item.hide { transform:translateX(calc(100% + 30px)); opacity:0; }
-        .toast-item .toast-icon { flex-shrink:0; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; }
-        .toast-item .toast-icon.success { background:rgba(16,185,129,0.15); color:#10b981; }
-        .toast-item .toast-icon.error { background:rgba(239,68,68,0.15); color:#ef4444; }
-        .toast-item .toast-icon.info { background:rgba(59,130,246,0.15); color:#3b82f6; }
-        .toast-item .toast-icon.warn { background:rgba(251,191,36,0.15); color:#fbbf24; }
-        .toast-item .toast-msg { flex:1; line-height:1.4; }
+        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 99999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; width: 100%; max-width: 380px; margin-left: auto; }
+        .toast-item { pointer-events: auto; padding: 12px 18px; border-radius: 14px; background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); border: 1px solid rgba(0,0,0,0.06); color: #212529; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); transform: translateX(calc(100% + 30px)); opacity: 0; transition: all 0.4s cubic-bezier(0.16,1,0.3,1); }
+        .toast-item.show { transform: translateX(0); opacity: 1; }
+        .toast-item.hide { transform: translateX(calc(100% + 30px)); opacity: 0; }
+        .toast-item .toast-icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+        .toast-item .toast-icon.success { background: rgba(34,197,94,0.1); color: #22c55e; }
+        .toast-item .toast-icon.error { background: rgba(239,68,68,0.1); color: #ef4444; }
+        .toast-item .toast-icon.info { background: rgba(59,130,246,0.1); color: #3b82f6; }
+        .toast-item .toast-icon.warn { background: rgba(234,179,8,0.1); color: #eab308; }
+        .toast-item .toast-msg { flex: 1; line-height: 1.4; }
 
-        .password-wrapper { position:relative; }
+        .password-wrapper { position: relative; }
         .password-wrapper input { padding-right: 44px; }
-        .password-toggle { position:absolute; right:12px; top:50%; transform:translateY(-50%); color:#667799; cursor:pointer; background:none; border:none; font-size:16px; }
-        .password-toggle:hover { color:#a855f7; }
-        
-        /* Style untuk progress ring */
+        .password-toggle { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #adb5bd; cursor: pointer; background: none; border: none; font-size: 16px; }
+        .password-toggle:hover { color: #b8955a; }
+
         .progress-ring { transform: rotate(-90deg); }
         .progress-ring circle { transition: stroke-dashoffset 0.35s; }
+
+        /* Sidebar putih elegan */
+        .sidebar-white { background: #ffffff; border-right: 1px solid #e9ecef; }
+        .nav-item { transition: all 0.2s; border-radius: 12px; padding: 10px 16px; font-weight: 600; font-size: 13px; color: #6c757d; border: 1px solid transparent; }
+        .nav-item:hover { background: #f8f9fa; color: #212529; }
+        .nav-item.active { background: #f5f0e8; color: #b8955a; border-color: #e8e0d0; }
+
+        .input-white { background: #f8f9fa; border: 1.5px solid #e9ecef; border-radius: 12px; padding: 12px 16px; color: #212529; font-size: 14px; transition: all 0.3s; outline: none; width: 100%; }
+        .input-white:focus { border-color: #b8955a; box-shadow: 0 0 0 4px rgba(184,149,90,0.08); }
+        .input-white::placeholder { color: #adb5bd; }
+
+        .card-white { background: #ffffff; border: 1px solid #e9ecef; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.03); }
+        .select-white { background: #f8f9fa; border: 1.5px solid #e9ecef; border-radius: 12px; padding: 10px 16px; color: #212529; font-size: 13px; outline: none; transition: all 0.3s; width: 100%; }
+        .select-white:focus { border-color: #b8955a; box-shadow: 0 0 0 4px rgba(184,149,90,0.08); }
+        .badge-gold { background: #f5f0e8; color: #b8955a; padding: 2px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* Wave bar untuk audio */
+        .wave-bar { animation: quiet 1.2s ease-in-out infinite alternate; }
+        .wave-bar:nth-child(2n) { animation-duration: 0.8s; }
+        .wave-bar:nth-child(3n) { animation-duration: 1.4s; }
+        .wave-bar.active { animation-name: loud; }
+        @keyframes quiet { 0% { height: 4px; } 100% { height: 16px; } }
+        @keyframes loud { 0% { height: 8px; } 100% { height: 45px; } }
     </style>
 </head>
 <body>
@@ -152,7 +176,7 @@
                 Belum punya akses? Hubungi Admin:
                 <a href="tel:085138718594"><strong>0851-3871-8594</strong></a>
                 <br>
-                <span style="font-size:11px; color:#445566;">(WhatsApp / Telepon)</span>
+                <span style="font-size:11px; color:#adb5bd;">(WhatsApp / Telepon)</span>
             </div>
             <div class="version">v2.1 • by Kreatorpedia</div>
         </div>
@@ -164,49 +188,49 @@
     <!-- MAIN APP -->
     <div id="mainApp" class="flex flex-col md:flex-row h-screen w-full overflow-hidden select-none">
 
-        <!-- SIDEBAR -->
-        <aside class="w-full md:w-64 bg-dark-950 border-b md:border-b-0 md:border-r border-dark-800 flex flex-col z-20 shadow-2xl flex-shrink-0">
-            <div class="p-4 md:p-5 border-b border-dark-800 flex items-center justify-between md:justify-start gap-3">
+        <!-- SIDEBAR PUTIH ELEGAN -->
+        <aside class="sidebar-white w-full md:w-64 flex flex-col z-20 flex-shrink-0">
+            <div class="p-4 md:p-5 border-b border-[#e9ecef] flex items-center justify-between md:justify-start gap-3">
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-purple-500/20">
-                        <i class="fa-solid fa-wand-magic-sparkles text-white text-sm md:text-lg animate-pulse"></i>
+                    <div class="w-9 h-9 md:w-11 md:h-11 rounded-xl bg-gradient-to-br from-[#b8955a] to-[#c9a96e] flex items-center justify-center shadow-md shadow-[#b8955a]/20">
+                        <i class="fa-solid fa-wand-magic-sparkles text-white text-sm md:text-lg"></i>
                     </div>
                     <div>
-                        <h1 class="text-sm font-extrabold text-white leading-tight">Studio Konten</h1>
-                        <p class="text-[9px] text-purple-400 font-bold tracking-widest uppercase">by Kreatorpedia</p>
+                        <h1 class="text-sm font-extrabold text-[#212529] leading-tight">Studio Konten</h1>
+                        <p class="text-[9px] text-[#b8955a] font-bold tracking-widest uppercase">by Kreatorpedia</p>
                     </div>
                 </div>
-                <button onclick="logoutApp()" class="md:hidden text-slate-400 hover:text-white text-sm transition-all">
+                <button onclick="logoutApp()" class="md:hidden text-[#6c757d] hover:text-[#212529] text-sm transition-all">
                     <i class="fa-solid fa-sign-out-alt"></i>
                 </button>
             </div>
 
-            <nav class="flex-none md:flex-1 p-2 md:p-4 flex flex-row md:flex-col gap-2 overflow-x-auto md:overflow-y-auto no-scrollbar border-b border-dark-800 md:border-none">
-                <button onclick="switchTab('tab-ideasi')" id="nav-ideasi" class="flex-shrink-0 w-auto md:w-full flex items-center gap-2 md:gap-3 px-4 py-2.5 md:py-3 rounded-xl transition-all text-xs md:text-sm font-semibold text-left text-purple-400 bg-purple-500/10 border border-purple-500/30">
-                    <i class="fa-solid fa-lightbulb w-4 md:w-5 text-center text-base md:text-lg"></i> 1. Ide & Naskah
+            <nav class="flex-none md:flex-1 p-2 md:p-4 flex flex-row md:flex-col gap-1 overflow-x-auto md:overflow-y-auto no-scrollbar border-b border-[#e9ecef] md:border-none">
+                <button onclick="switchTab('tab-ideasi')" id="nav-ideasi" class="nav-item active flex-shrink-0 w-auto md:w-full flex items-center gap-2 md:gap-3">
+                    <i class="fa-solid fa-lightbulb w-4 md:w-5 text-center text-sm md:text-base"></i> 1. Ide & Naskah
                 </button>
-                <button onclick="switchTab('tab-suara')" id="nav-suara" class="flex-shrink-0 w-auto md:w-full flex items-center gap-2 md:gap-3 px-4 py-2.5 md:py-3 rounded-xl text-slate-400 hover:bg-dark-800/50 hover:text-white transition-all text-xs md:text-sm font-semibold text-left border border-transparent">
-                    <i class="fa-solid fa-microphone-lines w-4 md:w-5 text-center text-base md:text-lg"></i> 2. Suara TTS
+                <button onclick="switchTab('tab-suara')" id="nav-suara" class="nav-item flex-shrink-0 w-auto md:w-full flex items-center gap-2 md:gap-3">
+                    <i class="fa-solid fa-microphone-lines w-4 md:w-5 text-center text-sm md:text-base"></i> 2. Suara TTS
                 </button>
-                <button onclick="switchTab('tab-visual')" id="nav-visual" class="flex-shrink-0 w-auto md:w-full flex items-center gap-2 md:gap-3 px-4 py-2.5 md:py-3 rounded-xl text-slate-400 hover:bg-dark-800/50 hover:text-white transition-all text-xs md:text-sm font-semibold text-left border border-transparent">
-                    <i class="fa-solid fa-image w-4 md:w-5 text-center text-base md:text-lg"></i> 3. Storyboard
+                <button onclick="switchTab('tab-visual')" id="nav-visual" class="nav-item flex-shrink-0 w-auto md:w-full flex items-center gap-2 md:gap-3">
+                    <i class="fa-solid fa-image w-4 md:w-5 text-center text-sm md:text-base"></i> 3. Storyboard
                 </button>
-                <button onclick="switchTab('tab-render')" id="nav-render" class="flex-shrink-0 w-auto md:w-full flex items-center gap-2 md:gap-3 px-4 py-2.5 md:py-3 rounded-xl text-slate-400 hover:bg-dark-800/50 hover:text-white transition-all text-xs md:text-sm font-semibold text-left border border-transparent">
-                    <i class="fa-solid fa-film w-4 md:w-5 text-center text-base md:text-lg"></i> 4. Render Video
+                <button onclick="switchTab('tab-render')" id="nav-render" class="nav-item flex-shrink-0 w-auto md:w-full flex items-center gap-2 md:gap-3">
+                    <i class="fa-solid fa-film w-4 md:w-5 text-center text-sm md:text-base"></i> 4. Render Video
                 </button>
             </nav>
 
             <!-- API SETTINGS -->
-            <div class="p-3 md:p-4 md:border-t border-dark-800 flex flex-col gap-2 bg-dark-900/30">
+            <div class="p-3 md:p-4 border-t border-[#e9ecef] flex flex-col gap-2 bg-[#faf9f6]">
                 <div class="flex items-center justify-between cursor-pointer md:cursor-default" onclick="document.getElementById('api-settings').classList.toggle('hidden')">
                     <div class="flex items-center gap-2">
                         <span class="api-status-dot off" id="apiStatusDot"></span>
-                        <p class="text-[10px] font-bold text-white uppercase tracking-wider">⚡ API Settings</p>
+                        <p class="text-[10px] font-bold text-[#6c757d] uppercase tracking-wider">⚡ API Settings</p>
                     </div>
-                    <i class="fa-solid fa-chevron-down text-slate-400 text-xs md:hidden"></i>
+                    <i class="fa-solid fa-chevron-down text-[#adb5bd] text-xs md:hidden"></i>
                 </div>
                 <div id="api-settings" class="flex flex-col gap-2 mt-1">
-                    <select id="provider-select" onchange="toggleProvider()" class="bg-dark-950 border border-dark-800 rounded-lg text-[10px] p-2 text-slate-300 focus:outline-none focus:border-purple-500 w-full">
+                    <select id="provider-select" onchange="toggleProvider()" class="select-white text-[10px]">
                         <option value="openrouter">🌐 OpenRouter (FREE) - REKOMENDASI</option>
                         <option value="gemini">🔵 Google Gemini</option>
                     </select>
@@ -225,9 +249,9 @@
                             <option value="google/gemini-2.0-flash-lite-preview-02-05:free">🧠 gemini-2.0-flash-lite:free</option>
                         </select>
                         <div class="flex gap-2 mt-1 flex-wrap">
-                            <button onclick="testOpenRouterKey()" class="flex-1 bg-dark-800 hover:bg-dark-700 text-[10px] py-1.5 px-3 rounded-lg text-slate-300 transition-all">🔑 Test Key</button>
-                            <button onclick="fetchOpenRouterModels()" class="flex-1 bg-dark-800 hover:bg-dark-700 text-[10px] py-1.5 px-3 rounded-lg text-slate-300 transition-all">📦 Refresh Model</button>
-                            <button onclick="openRouterKeys()" class="flex-1 bg-purple-600/20 hover:bg-purple-600/40 text-[10px] py-1.5 px-3 rounded-lg text-purple-300 transition-all border border-purple-500/20">📋 Ambil Key</button>
+                            <button onclick="testOpenRouterKey()" class="flex-1 bg-[#f8f9fa] hover:bg-[#e9ecef] text-[10px] py-1.5 px-3 rounded-lg text-[#495057] transition-all border border-[#e9ecef]">🔑 Test Key</button>
+                            <button onclick="fetchOpenRouterModels()" class="flex-1 bg-[#f8f9fa] hover:bg-[#e9ecef] text-[10px] py-1.5 px-3 rounded-lg text-[#495057] transition-all border border-[#e9ecef]">📦 Refresh Model</button>
+                            <button onclick="openRouterKeys()" class="flex-1 bg-[#f5f0e8] hover:bg-[#e8e0d0] text-[10px] py-1.5 px-3 rounded-lg text-[#b8955a] transition-all border border-[#e8e0d0]">📋 Ambil Key</button>
                         </div>
                     </div>
 
@@ -239,8 +263,8 @@
                             </button>
                         </div>
                         <div class="flex gap-2 mt-1 flex-wrap">
-                            <button onclick="testGeminiKey()" class="flex-1 bg-dark-800 hover:bg-dark-700 text-[10px] py-1.5 px-3 rounded-lg text-slate-300 transition-all">🔑 Test Key</button>
-                            <button onclick="geminiKeys()" class="flex-1 bg-purple-600/20 hover:bg-purple-600/40 text-[10px] py-1.5 px-3 rounded-lg text-purple-300 transition-all border border-purple-500/20">📋 Ambil Key</button>
+                            <button onclick="testGeminiKey()" class="flex-1 bg-[#f8f9fa] hover:bg-[#e9ecef] text-[10px] py-1.5 px-3 rounded-lg text-[#495057] transition-all border border-[#e9ecef]">🔑 Test Key</button>
+                            <button onclick="geminiKeys()" class="flex-1 bg-[#f5f0e8] hover:bg-[#e8e0d0] text-[10px] py-1.5 px-3 rounded-lg text-[#b8955a] transition-all border border-[#e8e0d0]">📋 Ambil Key</button>
                         </div>
                     </div>
                 </div>
@@ -248,17 +272,17 @@
         </aside>
 
         <!-- MAIN CONTENT -->
-        <main class="flex-1 relative bg-dark-900 overflow-y-auto flex flex-col h-full">
-            <header class="sticky top-0 z-10 glass-panel px-4 md:px-8 py-3 md:py-4 flex justify-between items-center border-b border-dark-800/50">
+        <main class="flex-1 relative bg-[#f8f5ee] overflow-y-auto flex flex-col h-full">
+            <header class="sticky top-0 z-10 glass-panel px-4 md:px-8 py-3 md:py-4 flex justify-between items-center border-b border-[#e9ecef] bg-white/80">
                 <div class="pr-2">
-                    <h2 id="header-title" class="text-sm md:text-base font-bold text-white">Ideasi & Naskah Cerita</h2>
-                    <p id="header-subtitle" class="text-[10px] md:text-[11px] text-slate-400 line-clamp-1 md:line-clamp-none">by Kreatorpedia</p>
+                    <h2 id="header-title" class="text-sm md:text-base font-bold text-[#212529]">Ideasi & Naskah Cerita</h2>
+                    <p id="header-subtitle" class="text-[10px] md:text-[11px] text-[#6c757d] line-clamp-1 md:line-clamp-none">by Kreatorpedia</p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <span class="hidden md:flex bg-gradient-to-r from-purple-500/10 to-indigo-500/10 border border-purple-500/20 text-purple-400 px-3.5 py-1.5 rounded-full text-xs font-semibold items-center gap-1.5">
+                    <span class="hidden md:flex bg-[#f5f0e8] border border-[#e8e0d0] text-[#b8955a] px-3.5 py-1.5 rounded-full text-xs font-semibold items-center gap-1.5">
                         <i class="fa-solid fa-circle-nodes"></i> by Kreatorpedia
                     </span>
-                    <button onclick="logoutApp()" class="text-slate-400 hover:text-white text-sm transition-all hidden md:block" title="Logout">
+                    <button onclick="logoutApp()" class="text-[#6c757d] hover:text-[#212529] text-sm transition-all hidden md:block" title="Logout">
                         <i class="fa-solid fa-sign-out-alt"></i>
                     </button>
                 </div>
@@ -268,47 +292,47 @@
 
                 <!-- TAB 1: Ideasi -->
                 <section id="tab-ideasi" class="tab-content active space-y-4 md:space-y-6">
-                    <div class="glass-panel p-4 md:p-6 rounded-2xl border border-dark-800/80 shadow-xl space-y-4">
+                    <div class="card-white p-4 md:p-6 space-y-4">
                         <div class="flex flex-col md:flex-row gap-3">
-                            <input type="text" id="input-research-topic" placeholder="Contoh: rahasia gunung padang..." class="flex-1 bg-dark-950 border border-dark-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-purple-500">
-                            <button onclick="researchProfessionalTitles()" id="btn-research-titles" class="btn-purple text-white px-5 py-3 rounded-xl text-sm md:text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2">
+                            <input type="text" id="input-research-topic" placeholder="Contoh: rahasia gunung padang..." class="input-white">
+                            <button onclick="researchProfessionalTitles()" id="btn-research-titles" class="btn-gold text-white px-5 py-3 rounded-xl text-sm md:text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-chart-line"></i> <span>Riset 10 Judul</span>
                             </button>
                         </div>
-                        <div id="titles-recommendation-container" class="hidden p-4 bg-dark-950/60 rounded-xl border border-dark-800 space-y-3">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                                <i class="fa-solid fa-list-ol text-purple-400"></i> Rekomendasi 10 Judul:
+                        <div id="titles-recommendation-container" class="hidden p-4 bg-[#faf9f6] rounded-xl border border-[#e9ecef] space-y-3">
+                            <p class="text-[10px] font-bold text-[#6c757d] uppercase tracking-wider flex items-center gap-1.5">
+                                <i class="fa-solid fa-list-ol text-[#b8955a]"></i> Rekomendasi 10 Judul:
                             </p>
                             <div id="titles-recommendation-list" class="grid grid-cols-1 md:grid-cols-2 gap-2"></div>
                         </div>
                     </div>
 
-                    <div class="glass-panel p-4 md:p-6 rounded-2xl border border-dark-800/80 shadow-xl space-y-5">
+                    <div class="card-white p-4 md:p-6 space-y-5">
                         <div class="flex flex-col gap-3">
-                            <span class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider">Format Konten Video</span>
+                            <span class="text-[10px] md:text-xs font-bold text-[#6c757d] uppercase tracking-wider">Format Konten Video</span>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
-                                <label class="flex items-center gap-3 cursor-pointer bg-dark-950/40 p-3 md:p-4 rounded-xl border border-dark-800 hover:border-purple-500/50 transition-all">
-                                    <input type="radio" name="video-duration" value="short" checked class="w-4 h-4 text-purple-500 accent-purple-500">
+                                <label class="flex items-center gap-3 cursor-pointer bg-[#faf9f6] p-3 md:p-4 rounded-xl border border-[#e9ecef] hover:border-[#b8955a]/50 transition-all">
+                                    <input type="radio" name="video-duration" value="short" checked class="w-4 h-4 text-[#b8955a] accent-[#b8955a]">
                                     <div class="flex flex-col">
-                                        <span class="text-xs md:text-sm font-bold text-white">Cerita Pendek (Shorts/TikTok)</span>
-                                        <span class="text-[10px] md:text-xs text-slate-400">Rasio Vertikal (9:16)</span>
+                                        <span class="text-xs md:text-sm font-bold text-[#212529]">Cerita Pendek (Shorts/TikTok)</span>
+                                        <span class="text-[10px] md:text-xs text-[#6c757d]">Rasio Vertikal (9:16)</span>
                                     </div>
                                 </label>
-                                <label class="flex items-center gap-3 cursor-pointer bg-dark-950/40 p-3 md:p-4 rounded-xl border border-dark-800 hover:border-purple-500/50 transition-all">
-                                    <input type="radio" name="video-duration" value="long" class="w-4 h-4 text-purple-500 accent-purple-500">
+                                <label class="flex items-center gap-3 cursor-pointer bg-[#faf9f6] p-3 md:p-4 rounded-xl border border-[#e9ecef] hover:border-[#b8955a]/50 transition-all">
+                                    <input type="radio" name="video-duration" value="long" class="w-4 h-4 text-[#b8955a] accent-[#b8955a]">
                                     <div class="flex flex-col">
-                                        <span class="text-xs md:text-sm font-bold text-white">Cerita Panjang (YouTube)</span>
-                                        <span class="text-[10px] md:text-xs text-slate-400">Rasio Horisontal (16:9)</span>
+                                        <span class="text-xs md:text-sm font-bold text-[#212529]">Cerita Panjang (YouTube)</span>
+                                        <span class="text-[10px] md:text-xs text-[#6c757d]">Rasio Horisontal (16:9)</span>
                                     </div>
                                 </label>
                             </div>
                         </div>
 
-                        <div class="border-t border-dark-800/60 pt-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                        <div class="border-t border-[#e9ecef] pt-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
                             <div class="space-y-1">
-                                <span class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider block">Target Jumlah Adegan</span>
+                                <span class="text-[10px] md:text-xs font-bold text-[#6c757d] uppercase tracking-wider block">Target Jumlah Adegan</span>
                             </div>
-                            <select id="target-scenes-count-select" class="w-full md:w-auto bg-dark-950 border border-dark-800 text-white rounded-xl px-4 py-2.5 text-sm md:text-xs font-bold focus:outline-none focus:border-purple-500">
+                            <select id="target-scenes-count-select" class="select-white w-full md:w-auto text-xs font-bold">
                                 <option value="3">3 Adegan (Sangat Pendek)</option>
                                 <option value="5">5 Adegan (Standar Pendek)</option>
                                 <option value="8">8 Adegan (Sinematik Ringkas)</option>
@@ -317,20 +341,20 @@
                             </select>
                         </div>
 
-                        <div class="border-t border-dark-800/60 pt-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                        <div class="border-t border-[#e9ecef] pt-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
                             <div class="space-y-1">
-                                <span class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider block">Bahasa Konten</span>
+                                <span class="text-[10px] md:text-xs font-bold text-[#6c757d] uppercase tracking-wider block">Bahasa Konten</span>
                             </div>
-                            <select id="content-language-select" class="w-full md:w-auto bg-dark-950 border border-dark-800 text-white rounded-xl px-4 py-2.5 text-sm md:text-xs font-bold focus:outline-none focus:border-purple-500">
+                            <select id="content-language-select" class="select-white w-full md:w-auto text-xs font-bold">
                                 <option value="id" selected>Bahasa Indonesia</option>
                                 <option value="en">English (Inggris)</option>
                             </select>
                         </div>
 
-                        <div class="border-t border-dark-800/60 pt-4">
-                            <span class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider block mb-3">Topik Utama atau Alur Cerita</span>
+                        <div class="border-t border-[#e9ecef] pt-4">
+                            <span class="text-[10px] md:text-xs font-bold text-[#6c757d] uppercase tracking-wider block mb-3">Topik Utama atau Alur Cerita</span>
                             <div class="flex flex-col md:flex-row gap-3">
-                                <input type="text" id="input-topic" placeholder="Topik dari riset judul atau manual..." class="flex-1 bg-dark-950 border border-dark-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-purple-500">
+                                <input type="text" id="input-topic" placeholder="Topik dari riset judul atau manual..." class="input-white">
                                 <button onclick="generateNaskah()" id="btn-gen-naskah" class="btn-download text-white px-6 py-3 rounded-xl text-sm font-bold transition-all shadow-lg flex items-center justify-center gap-2">
                                     <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Buat Naskah AI</span>
                                 </button>
@@ -339,41 +363,41 @@
                     </div>
 
                     <div id="metadata-container" class="space-y-4 md:space-y-6 hidden">
-                        <div class="glass-panel p-4 md:p-6 rounded-2xl border border-dark-800 relative overflow-hidden">
-                            <div class="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-red-500 to-transparent opacity-50"></div>
+                        <div class="card-white p-4 md:p-6 relative overflow-hidden">
+                            <div class="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#b8955a] to-transparent opacity-50"></div>
                             <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-3">
-                                <h4 class="text-sm md:text-base font-bold text-white flex items-center gap-2">
-                                    <i class="fa-brands fa-youtube text-red-500 text-xl"></i> Metadata SEO Video
+                                <h4 class="text-sm md:text-base font-bold text-[#212529] flex items-center gap-2">
+                                    <i class="fa-brands fa-youtube text-[#dc2626] text-xl"></i> Metadata SEO Video
                                 </h4>
-                                <button onclick="copyMetadata()" class="bg-dark-800 hover:bg-dark-700 border border-dark-700 text-xs px-4 py-2 rounded-xl text-white font-bold transition-all flex items-center justify-center gap-2 shadow">
+                                <button onclick="copyMetadata()" class="bg-[#f8f9fa] hover:bg-[#e9ecef] border border-[#e9ecef] text-xs px-4 py-2 rounded-xl text-[#212529] font-bold transition-all flex items-center justify-center gap-2 shadow-sm">
                                     <i class="fa-solid fa-copy"></i> Salin Teks
                                 </button>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="text-[10px] text-slate-400 font-bold uppercase mb-1.5 flex items-center gap-1.5"><i class="fa-solid fa-heading text-purple-400"></i> Judul</label>
-                                    <textarea id="out-title" class="w-full bg-dark-950 border border-dark-800 rounded-xl p-3 text-sm text-white font-bold h-16 resize-none focus:border-purple-500 focus:outline-none"></textarea>
+                                    <label class="text-[10px] text-[#6c757d] font-bold uppercase mb-1.5 flex items-center gap-1.5"><i class="fa-solid fa-heading text-[#b8955a]"></i> Judul</label>
+                                    <textarea id="out-title" class="w-full bg-[#f8f9fa] border border-[#e9ecef] rounded-xl p-3 text-sm text-[#212529] font-bold h-16 resize-none focus:border-[#b8955a] focus:outline-none"></textarea>
                                 </div>
                                 <div>
-                                    <label class="text-[10px] text-slate-400 font-bold uppercase mb-1.5 flex items-center gap-1.5"><i class="fa-solid fa-hashtag text-purple-400"></i> Hashtag</label>
-                                    <textarea id="out-tags" class="w-full bg-dark-950 border border-dark-800 rounded-xl p-3 text-sm text-purple-400 font-mono h-16 resize-none focus:border-purple-500 focus:outline-none"></textarea>
+                                    <label class="text-[10px] text-[#6c757d] font-bold uppercase mb-1.5 flex items-center gap-1.5"><i class="fa-solid fa-hashtag text-[#b8955a]"></i> Hashtag</label>
+                                    <textarea id="out-tags" class="w-full bg-[#f8f9fa] border border-[#e9ecef] rounded-xl p-3 text-sm text-[#b8955a] font-mono h-16 resize-none focus:border-[#b8955a] focus:outline-none"></textarea>
                                 </div>
                                 <div class="md:col-span-2">
-                                    <label class="text-[10px] text-slate-400 font-bold uppercase mb-1.5 flex items-center gap-1.5"><i class="fa-solid fa-align-left text-purple-400"></i> Deskripsi Lengkap</label>
-                                    <textarea id="out-desc" class="w-full bg-dark-950 border border-dark-800 rounded-xl p-4 text-sm text-slate-300 h-28 resize-none focus:border-purple-500 focus:outline-none"></textarea>
+                                    <label class="text-[10px] text-[#6c757d] font-bold uppercase mb-1.5 flex items-center gap-1.5"><i class="fa-solid fa-align-left text-[#b8955a]"></i> Deskripsi Lengkap</label>
+                                    <textarea id="out-desc" class="w-full bg-[#f8f9fa] border border-[#e9ecef] rounded-xl p-4 text-sm text-[#495057] h-28 resize-none focus:border-[#b8955a] focus:outline-none"></textarea>
                                 </div>
                             </div>
                         </div>
-                        <div class="glass-panel p-4 md:p-6 rounded-2xl border border-dark-800 flex flex-col">
+                        <div class="card-white p-4 md:p-6 flex flex-col">
                             <div class="flex justify-between items-center mb-4">
-                                <h4 class="text-sm font-bold text-white flex items-center gap-2">
-                                    <i class="fa-solid fa-file-invoice text-purple-400"></i> Skrip Narasi (JSON)
+                                <h4 class="text-sm font-bold text-[#212529] flex items-center gap-2">
+                                    <i class="fa-solid fa-file-invoice text-[#b8955a]"></i> Skrip Narasi (JSON)
                                 </h4>
-                                <span id="out-scenes-count" class="px-2.5 py-1 rounded-full text-[10px] bg-purple-500/10 text-purple-400 border border-purple-500/20 font-bold uppercase">0 Adegan</span>
+                                <span id="out-scenes-count" class="badge-gold">0 Adegan</span>
                             </div>
                             <div id="script-scenes-editor" class="space-y-4 max-h-96 overflow-y-auto pr-1"></div>
-                            <div class="mt-4 pt-4 border-t border-dark-800 flex justify-end">
-                                <button onclick="switchTab('tab-suara')" class="btn-purple text-white px-5 py-3 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2">
+                            <div class="mt-4 pt-4 border-t border-[#e9ecef] flex justify-end">
+                                <button onclick="switchTab('tab-suara')" class="btn-gold text-white px-5 py-3 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2">
                                     Lanjut Langkah 2 <i class="fa-solid fa-arrow-right"></i>
                                 </button>
                             </div>
@@ -381,25 +405,25 @@
                     </div>
                 </section>
 
-                <!-- TAB 2: Suara -->
+                <!-- TAB 2: Suara (dari lampiran 1) -->
                 <section id="tab-suara" class="tab-content space-y-4 md:space-y-6">
-                    <div class="glass-panel p-4 md:p-6 rounded-2xl border border-dark-800 space-y-6">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-dark-800 pb-4">
+                    <div class="card-white p-4 md:p-6 space-y-6">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#e9ecef] pb-4">
                             <div>
-                                <h3 class="text-sm md:text-base font-bold text-white">Langkah 2: Narasi & TTS</h3>
-                                <p class="text-[10px] md:text-xs text-slate-400">Konversi teks menjadi suara realistis.</p>
+                                <h3 class="text-sm md:text-base font-bold text-[#212529]">Langkah 2: Narasi & TTS</h3>
+                                <p class="text-[10px] md:text-xs text-[#6c757d]">Konversi teks menjadi suara realistis.</p>
                             </div>
                             <div class="grid grid-cols-2 md:flex items-center gap-3">
                                 <div class="col-span-2 md:col-span-1">
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Penyedia Audio</label>
-                                    <select id="audio-provider-select" onchange="toggleAudioProvider()" class="bg-dark-950 border border-dark-800 rounded-xl px-3 py-2 text-sm md:text-xs text-white w-full md:w-auto">
+                                    <label class="block text-[10px] font-bold text-[#6c757d] uppercase mb-1">Penyedia Audio</label>
+                                    <select id="audio-provider-select" onchange="toggleAudioProvider()" class="select-white text-sm md:text-xs w-full md:w-auto">
                                         <option value="webspeech" selected>Lokal (WebSpeech - Gratis)</option>
                                         <option value="gemini">Gemini Premium (TTS)</option>
                                     </select>
                                 </div>
                                 <div id="gemini-voices-div" class="hidden col-span-2 md:col-span-1">
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Suara Gemini</label>
-                                    <select id="gemini-voice-select" class="bg-dark-950 border border-dark-800 rounded-xl px-3 py-2 text-sm md:text-xs text-white w-full md:w-auto">
+                                    <label class="block text-[10px] font-bold text-[#6c757d] uppercase mb-1">Suara Gemini</label>
+                                    <select id="gemini-voice-select" class="select-white text-sm md:text-xs w-full md:w-auto">
                                         <option value="Zephyr">Zephyr (Bright)</option>
                                         <option value="Puck">Puck (Upbeat)</option>
                                         <option value="Charon">Charon (Informative)</option>
@@ -407,58 +431,61 @@
                                     </select>
                                 </div>
                                 <div id="webspeech-voices-div" class="col-span-2 md:col-span-1">
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Suara Lokal</label>
-                                    <select id="tts-voice-select" class="bg-dark-950 border border-dark-800 rounded-xl px-3 py-2 text-sm md:text-xs text-white w-full md:w-auto"></select>
+                                    <label class="block text-[10px] font-bold text-[#6c757d] uppercase mb-1">Suara Lokal</label>
+                                    <select id="tts-voice-select" class="select-white text-sm md:text-xs w-full md:w-auto"></select>
                                 </div>
                             </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div class="md:col-span-1 space-y-4">
-                                <div class="bg-dark-950/60 p-4 md:p-5 rounded-2xl border border-dark-800/80">
+                                <div class="bg-[#faf9f6] p-4 md:p-5 rounded-2xl border border-[#e9ecef]">
                                     <div class="space-y-3">
-                                        <button onclick="playAllNarrations()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2">
+                                        <button onclick="playAllNarrations()" class="w-full bg-[#22c55e] hover:bg-[#16a34a] text-white py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2">
                                             <i class="fa-solid fa-play animate-pulse"></i> Putar Semua
                                         </button>
-                                        <button onclick="stopAllNarrations()" class="w-full bg-dark-800 hover:bg-dark-700 text-slate-300 py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2">
+                                        <button onclick="stopAllNarrations()" class="w-full bg-[#f8f9fa] hover:bg-[#e9ecef] text-[#495057] py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border border-[#e9ecef]">
                                             <i class="fa-solid fa-stop"></i> Henti
                                         </button>
                                     </div>
-                                    <div class="mt-4 pt-4 border-t border-dark-800">
+                                    <div class="mt-4 pt-4 border-t border-[#e9ecef] flex flex-col gap-2">
                                         <button onclick="downloadAllAudio()" id="btn-download-audio" class="w-full btn-download text-white py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-lg">
-                                            <i class="fa-solid fa-download"></i> Unduh Suara Gabungan
+                                            <i class="fa-solid fa-download"></i> Unduh Semua Suara (Gabungan)
                                         </button>
-                                        <p id="download-hint" class="text-[8px] text-amber-400 text-center mt-1 hidden">💡 Dengan WebSpeech, unduh sebagai teks (.txt). Pilih Gemini untuk file WAV.</p>
+                                        <button onclick="downloadAllAudioPerScene()" id="btn-download-audio-per-scene" class="w-full bg-[#f8f9fa] hover:bg-[#e9ecef] text-[#495057] py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 border border-[#e9ecef] transition-all">
+                                            <i class="fa-solid fa-download"></i> Unduh Per Adegan (ZIP)
+                                        </button>
+                                        <p id="download-hint" class="text-[8px] text-[#eab308] text-center mt-1 hidden">💡 Dengan WebSpeech, unduh sebagai teks (.txt). Pilih Gemini untuk file WAV.</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="md:col-span-2 space-y-3 max-h-[350px] overflow-y-auto pr-1" id="voice-narration-list">
-                                <div class="text-center py-10 text-slate-500 text-xs">Buat naskah di Langkah 1 terlebih dahulu.</div>
+                                <div class="text-center py-10 text-[#adb5bd] text-xs">Buat naskah di Langkah 1 terlebih dahulu.</div>
                             </div>
                         </div>
-                        <div class="mt-2 pt-4 border-t border-dark-800 flex justify-between items-center">
-                            <button onclick="switchTab('tab-ideasi')" class="text-slate-400 text-xs font-bold"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
-                            <button onclick="switchTab('tab-visual')" class="btn-purple text-white px-5 py-3 rounded-xl text-sm font-bold flex items-center gap-2">
+                        <div class="mt-2 pt-4 border-t border-[#e9ecef] flex justify-between items-center">
+                            <button onclick="switchTab('tab-ideasi')" class="text-[#6c757d] text-xs font-bold"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
+                            <button onclick="switchTab('tab-visual')" class="btn-gold text-white px-5 py-3 rounded-xl text-sm font-bold flex items-center gap-2">
                                 Lanjut Langkah 3 <i class="fa-solid fa-arrow-right"></i>
                             </button>
                         </div>
                     </div>
                 </section>
 
-                <!-- TAB 3: Visual -->
+                <!-- TAB 3: Visual (diperbaiki dengan Flux AI) -->
                 <section id="tab-visual" class="tab-content space-y-4 md:space-y-6">
-                    <div class="glass-panel p-4 md:p-6 rounded-2xl border border-dark-800 space-y-4 overflow-x-auto">
-                        <h3 class="text-xs font-bold text-slate-300 flex items-center gap-2 uppercase tracking-wider mb-2">
-                            <i class="fa-solid fa-palette text-purple-400"></i> Pilih Gaya Visual Storyboard (8 Pilihan)
+                    <div class="card-white p-4 md:p-6 space-y-4 overflow-x-auto">
+                        <h3 class="text-xs font-bold text-[#6c757d] flex items-center gap-2 uppercase tracking-wider mb-2">
+                            <i class="fa-solid fa-palette text-[#b8955a]"></i> Pilih Gaya Visual Storyboard (8 Pilihan)
                         </h3>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 w-full" id="stylePresetsContainer"></div>
                     </div>
-                    <div class="glass-panel p-4 md:p-6 rounded-2xl border border-dark-800 space-y-5">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-dark-800 pb-4">
+                    <div class="card-white p-4 md:p-6 space-y-5">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#e9ecef] pb-4">
                             <div>
-                                <h3 class="text-sm md:text-base font-bold text-white">Langkah 3: Visualisasi Adegan</h3>
+                                <h3 class="text-sm md:text-base font-bold text-[#212529]">Langkah 3: Visualisasi Adegan</h3>
                             </div>
                             <div class="flex flex-col md:flex-row items-stretch md:items-center gap-3">
-                                <select id="image-model-select" class="bg-dark-950 border border-dark-800 rounded-xl px-3 py-2.5 md:py-2 text-sm md:text-xs text-white">
+                                <select id="image-model-select" class="select-white text-sm md:text-xs">
                                     <option value="flux">Flux AI (High-Speed)</option>
                                     <option value="imagen">Google Imagen 4.0 (Premium)</option>
                                 </select>
@@ -468,11 +495,11 @@
                             </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6" id="visual-storyboard-grid">
-                            <div class="col-span-2 text-center py-10 text-slate-500 text-xs">Silakan buat naskah terlebih dahulu.</div>
+                            <div class="col-span-2 text-center py-10 text-[#adb5bd] text-xs">Silakan buat naskah terlebih dahulu.</div>
                         </div>
-                        <div class="mt-2 pt-4 border-t border-dark-800 flex justify-between items-center">
-                            <button onclick="switchTab('tab-suara')" class="text-slate-400 text-xs font-bold"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
-                            <button onclick="switchTab('tab-render')" class="btn-purple text-white px-5 py-3 rounded-xl text-sm font-bold flex items-center gap-2">
+                        <div class="mt-2 pt-4 border-t border-[#e9ecef] flex justify-between items-center">
+                            <button onclick="switchTab('tab-suara')" class="text-[#6c757d] text-xs font-bold"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
+                            <button onclick="switchTab('tab-render')" class="btn-gold text-white px-5 py-3 rounded-xl text-sm font-bold flex items-center gap-2">
                                 Langkah 4: Render <i class="fa-solid fa-arrow-right"></i>
                             </button>
                         </div>
@@ -481,30 +508,29 @@
 
                 <!-- TAB 4: Render -->
                 <section id="tab-render" class="tab-content space-y-4 md:space-y-6">
-                    <div class="glass-panel p-4 md:p-6 rounded-2xl border border-dark-800 space-y-5">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-dark-800 pb-4 gap-4">
+                    <div class="card-white p-4 md:p-6 space-y-5">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-[#e9ecef] pb-4 gap-4">
                             <div>
-                                <h3 class="text-sm md:text-base font-bold text-white">Langkah Akhir: Export Video</h3>
-                                <p class="text-[10px] md:text-xs text-slate-400">Video tanpa teks, durasi otomatis sinkron dengan audio TTS</p>
+                                <h3 class="text-sm md:text-base font-bold text-[#212529]">Langkah Akhir: Export Video</h3>
+                                <p class="text-[10px] md:text-xs text-[#6c757d]">Video tanpa teks, durasi otomatis sinkron dengan audio TTS</p>
                             </div>
-                            <button onclick="startVideoRenderingProcess()" class="btn-purple text-white font-extrabold text-xs px-6 py-4 rounded-xl shadow-lg flex items-center justify-center gap-2 border border-purple-400/30 w-full md:w-auto">
+                            <button onclick="startVideoRenderingProcess()" class="btn-gold text-white font-extrabold text-xs px-6 py-4 rounded-xl shadow-lg flex items-center justify-center gap-2 border border-[#c9a96e]/30 w-full md:w-auto">
                                 <i class="fa-solid fa-file-video animate-pulse text-sm"></i> MULAI RENDER
                             </button>
                         </div>
 
-                        <!-- Info durasi total -->
-                        <div class="bg-dark-900/50 border border-purple-500/30 rounded-xl p-4 flex gap-3 items-start md:items-center">
-                            <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 flex-shrink-0 mt-1 md:mt-0">
+                        <div class="bg-[#faf9f6] border border-[#e8e0d0] rounded-xl p-4 flex gap-3 items-start md:items-center">
+                            <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#f5f0e8] flex items-center justify-center text-[#b8955a] flex-shrink-0 mt-1 md:mt-0">
                                 <i class="fa-solid fa-clock"></i>
                             </div>
                             <div>
-                                <p class="text-[10px] md:text-xs text-slate-300 leading-relaxed">
-                                    <strong class="text-white">Durasi Total:</strong> 
-                                    <span id="total-duration-display" class="text-purple-400 font-bold">0 detik</span>
-                                    <span class="text-slate-500"> | </span>
-                                    <span class="text-slate-400">Setiap adegan: <strong id="scene-duration-display" class="text-white">3.5</strong> detik</span>
+                                <p class="text-[10px] md:text-xs text-[#495057] leading-relaxed">
+                                    <strong class="text-[#212529]">Durasi Total:</strong>
+                                    <span id="total-duration-display" class="text-[#b8955a] font-bold">0 detik</span>
+                                    <span class="text-[#adb5bd]"> | </span>
+                                    <span class="text-[#6c757d]">Setiap adegan: <strong id="scene-duration-display" class="text-[#212529]">3.5</strong> detik</span>
                                 </p>
-                                <p class="text-[9px] text-slate-500 mt-1">
+                                <p class="text-[9px] text-[#adb5bd] mt-1">
                                     <i class="fa-solid fa-info-circle"></i> Durasi video otomatis mengikuti total durasi narasi dari TTS
                                 </p>
                             </div>
@@ -512,42 +538,49 @@
 
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
                             <div class="lg:col-span-2 flex flex-col items-center w-full">
-                                <div id="player-outer-frame" class="w-full bg-slate-950/80 rounded-2xl border-4 border-dark-800 overflow-hidden shadow-[0_0_30px_rgba(0,0,0,0.8)] relative aspect-video flex flex-col justify-center items-center">
+                                <div id="player-outer-frame" class="w-full bg-[#f8f9fa] rounded-2xl border-4 border-[#e9ecef] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.04)] relative aspect-video flex flex-col justify-center items-center">
                                     <div class="relative w-full h-full flex flex-col justify-center items-center" id="video-preview-player">
-                                        <img id="player-scene-img" src="https://placehold.co/1280x720/0a0f1d/33466a?text=Mulai+Pratinjau" class="w-full h-full object-cover transition-opacity duration-700" alt="Adegan">
-                                        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent flex flex-col justify-end p-4 md:p-10">
-                                            <p id="player-hud-narration" class="text-[10px] md:text-sm font-bold text-white px-3 py-1.5 md:px-4 md:py-2 bg-black/75 rounded-xl border border-white/5 shadow-2xl text-center mx-auto max-w-xl">
+                                        <img id="player-scene-img" src="https://placehold.co/1280x720/f8f9fa/ced4da?text=Preview+Adegan" class="w-full h-full object-cover transition-opacity duration-700" alt="Adegan">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-4 md:p-10">
+                                            <p id="player-hud-narration" class="text-[10px] md:text-sm font-bold text-white px-3 py-1.5 md:px-4 md:py-2 bg-black/60 rounded-xl backdrop-blur-sm border border-white/10 shadow-xl text-center mx-auto max-w-xl">
                                                 Pratinjau visual (tanpa teks)
                                             </p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="w-full mt-4 p-3 md:p-4 bg-dark-950/60 rounded-2xl border border-dark-800 flex items-center gap-4">
-                                    <button id="player-play-btn" onclick="togglePlayer()" class="w-10 h-10 md:w-12 md:h-12 flex-shrink-0 rounded-full bg-purple-600 text-white flex items-center justify-center shadow-lg">
+                                <div class="w-full mt-4 p-3 md:p-4 bg-[#faf9f6] rounded-2xl border border-[#e9ecef] flex items-center gap-4">
+                                    <button id="player-play-btn" onclick="togglePlayer()" class="w-10 h-10 md:w-12 md:h-12 flex-shrink-0 rounded-full bg-[#b8955a] text-white flex items-center justify-center shadow-md">
                                         <i class="fa-solid fa-play"></i>
                                     </button>
                                     <div class="flex-1">
-                                        <div class="flex justify-between text-[10px] md:text-xs font-bold text-slate-400 mb-1">
+                                        <div class="flex justify-between text-[10px] md:text-xs font-bold text-[#6c757d] mb-1">
                                             <span id="player-status-lbl">Henti</span>
                                             <span id="player-time-lbl">0 / 0</span>
                                         </div>
-                                        <div class="w-full bg-dark-800 h-2 rounded-full overflow-hidden cursor-pointer" onclick="seekPlayer(event)">
-                                            <div id="player-progress-bar" class="bg-purple-500 h-full w-0 transition-all duration-300"></div>
+                                        <div class="w-full bg-[#e9ecef] h-2 rounded-full overflow-hidden cursor-pointer" onclick="seekPlayer(event)">
+                                            <div id="player-progress-bar" class="bg-[#b8955a] h-full w-0 transition-all duration-300"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="lg:col-span-1 space-y-4 w-full">
-                                <div class="bg-dark-950/60 p-4 rounded-2xl border border-dark-800 flex flex-col h-full">
-                                    <h4 class="text-[10px] md:text-xs font-bold text-slate-400 mb-3 uppercase flex justify-between">
+                                <div class="bg-[#faf9f6] p-4 rounded-2xl border border-[#e9ecef] flex flex-col h-full">
+                                    <h4 class="text-[10px] md:text-xs font-bold text-[#6c757d] mb-3 uppercase flex justify-between">
                                         <span>Segmen Adegan</span>
-                                        <span id="player-scene-count-badge" class="px-2 py-0.5 rounded bg-purple-500/10 text-purple-400">0 Scene</span>
+                                        <span id="player-scene-count-badge" class="badge-gold">0 Scene</span>
                                     </h4>
                                     <div id="player-scene-playlist" class="space-y-2 overflow-y-auto max-h-[250px] md:max-h-[340px] pr-1">
-                                        <p class="text-xs text-slate-500 text-center py-4">Belum ada adegan.</p>
+                                        <p class="text-xs text-[#adb5bd] text-center py-4">Belum ada adegan.</p>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Tombol Download Audio & Video Bersamaan -->
+                        <div class="border-t border-[#e9ecef] pt-4 flex flex-wrap gap-3 justify-center md:justify-end">
+                            <button onclick="downloadAudioAndVideoTogether()" class="btn-gold text-white px-6 py-3 rounded-xl text-sm font-bold transition-all shadow-lg flex items-center gap-2">
+                                <i class="fa-solid fa-download"></i> Download Audio & Video
+                            </button>
                         </div>
                     </div>
                 </section>
@@ -556,40 +589,39 @@
     </div>
 
     <!-- MODAL RENDER -->
-    <div id="rendering-modal" class="fixed inset-0 bg-black/95 backdrop-filter backdrop-blur-md z-50 flex items-center justify-center hidden">
-        <div class="glass-panel w-full max-w-sm md:max-w-lg p-6 md:p-8 rounded-3xl border border-dark-800 shadow-2xl text-center space-y-5 mx-4 relative">
-            <div class="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"></div>
-            <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-purple-600/15 text-purple-400 flex items-center justify-center mx-auto animate-pulse">
+    <div id="rendering-modal" class="fixed inset-0 bg-white/95 backdrop-filter backdrop-blur-md z-50 flex items-center justify-center hidden">
+        <div class="card-white w-full max-w-sm md:max-w-lg p-6 md:p-8 rounded-3xl shadow-2xl text-center space-y-5 mx-4 relative">
+            <div class="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#b8955a] to-transparent"></div>
+            <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-[#f5f0e8] text-[#b8955a] flex items-center justify-center mx-auto animate-pulse">
                 <i class="fa-solid fa-film text-2xl md:text-3xl"></i>
             </div>
             <div>
-                <h3 class="text-lg md:text-xl font-bold text-white mb-1">Mengekspor Video...</h3>
-                <p id="render-modal-subtitle" class="text-[10px] md:text-xs text-slate-400">Harap tetap di halaman ini. Jangan matikan layar.</p>
-                <p class="text-[10px] text-purple-400 mt-2 font-bold animate-pulse"><i class="fa-solid fa-triangle-exclamation"></i> Menjaga layar tetap menyala mempercepat proses!</p>
+                <h3 class="text-lg md:text-xl font-bold text-[#212529] mb-1">Mengekspor Video...</h3>
+                <p id="render-modal-subtitle" class="text-[10px] md:text-xs text-[#6c757d]">Harap tetap di halaman ini. Jangan matikan layar.</p>
+                <p class="text-[10px] text-[#eab308] mt-2 font-bold animate-pulse"><i class="fa-solid fa-triangle-exclamation"></i> Menjaga layar tetap menyala mempercepat proses!</p>
             </div>
             <div class="relative w-24 h-24 md:w-32 md:h-32 mx-auto flex items-center justify-center">
                 <svg class="w-full h-full transform -rotate-90">
-                    <circle cx="50%" cy="50%" r="40%" stroke="currentColor" class="text-dark-800" stroke-width="8" fill="transparent" />
-                    <circle id="render-progress-ring" cx="50%" cy="50%" r="40%" stroke="currentColor" class="text-purple-500 transition-all duration-300" stroke-dasharray="251" stroke-dashoffset="251" stroke-linecap="round" stroke-width="8" fill="transparent" />
+                    <circle cx="50%" cy="50%" r="40%" stroke="currentColor" class="text-[#e9ecef]" stroke-width="8" fill="transparent" />
+                    <circle id="render-progress-ring" cx="50%" cy="50%" r="40%" stroke="currentColor" class="text-[#b8955a] transition-all duration-300" stroke-dasharray="251" stroke-dashoffset="251" stroke-linecap="round" stroke-width="8" fill="transparent" />
                 </svg>
-                <span id="render-progress-percent" class="absolute text-lg md:text-xl font-black text-white">0%</span>
+                <span id="render-progress-percent" class="absolute text-lg md:text-xl font-black text-[#212529]">0%</span>
             </div>
 
-            <!-- Informasi Durasi Render -->
-            <div class="bg-dark-950/80 border border-dark-800 p-3 rounded-xl text-left space-y-1">
-                <div class="flex justify-between text-[9px] md:text-[10px] font-bold text-slate-400">
+            <div class="bg-[#faf9f6] border border-[#e9ecef] p-3 rounded-xl text-left space-y-1">
+                <div class="flex justify-between text-[9px] md:text-[10px] font-bold text-[#6c757d]">
                     <span>STATUS OPERASI</span>
-                    <span id="render-step-indicator" class="text-purple-400">PROSES</span>
+                    <span id="render-step-indicator" class="text-[#b8955a]">PROSES</span>
                 </div>
-                <p id="render-step-desc" class="text-[10px] md:text-xs text-slate-200 font-semibold truncate">Memuat aset ke memori...</p>
-                <div class="flex justify-between text-[9px] text-slate-500 mt-1 pt-1 border-t border-dark-800">
-                    <span>Durasi Audio Total: <strong id="render-audio-duration" class="text-purple-300">0s</strong></span>
-                    <span>Durasi Video: <strong id="render-video-duration" class="text-emerald-300">0s</strong></span>
+                <p id="render-step-desc" class="text-[10px] md:text-xs text-[#212529] font-semibold truncate">Memuat aset ke memori...</p>
+                <div class="flex justify-between text-[9px] text-[#adb5bd] mt-1 pt-1 border-t border-[#e9ecef]">
+                    <span>Durasi Audio Total: <strong id="render-audio-duration" class="text-[#b8955a]">0s</strong></span>
+                    <span>Durasi Video: <strong id="render-video-duration" class="text-[#22c55e]">0s</strong></span>
                 </div>
             </div>
 
             <div id="render-action-buttons" class="flex flex-col gap-2 w-full mt-2">
-                <button onclick="cancelVideoRendering()" class="w-full bg-dark-800 hover:bg-dark-700 text-slate-400 py-3 rounded-xl text-xs font-bold">
+                <button onclick="cancelVideoRendering()" class="w-full bg-[#f8f9fa] hover:bg-[#e9ecef] text-[#6c757d] py-3 rounded-xl text-xs font-bold border border-[#e9ecef]">
                     Batalkan Export
                 </button>
             </div>
@@ -599,6 +631,9 @@
     <!-- Hidden Canvas -->
     <canvas id="offscreen-render-canvas" class="hidden"></canvas>
 
+    <!-- ========================================================== -->
+    <!-- JAVASCRIPT LENGKAP (gabungan: UI+TTS dari lampiran 1, sisanya dari lampiran 2, visual diperbaiki) -->
+    <!-- ========================================================== -->
     <script>
         // ============================================================
         // 1. LOGIN SYSTEM
@@ -710,7 +745,6 @@
             }
         }
 
-        // Toggle password visibility
         document.addEventListener('DOMContentLoaded', function() {
             const toggleLogin = document.getElementById('togglePasswordBtn');
             const loginPass = document.getElementById('passwordInput');
@@ -756,7 +790,7 @@
         }
 
         // ============================================================
-        // 2. APLIKASI – SEMUA FITUR
+        // 2. APLIKASI – SEMUA FITUR (gabungan)
         // ============================================================
 
         let generatedStory = { title: "", description: "", hashtags: "", scenes: [] };
@@ -1016,7 +1050,7 @@
             }
         }
 
-        // ----- Fungsi Riset & Naskah -----
+        // ----- Fungsi Riset & Naskah (dari lampiran 2) -----
         async function researchProfessionalTitles() {
             const rawTopic = document.getElementById('input-research-topic').value.trim();
             if (!rawTopic) return showToast("Masukkan topik riset terlebih dahulu!", "error");
@@ -1043,14 +1077,14 @@
                 list.innerHTML = '';
                 titles.forEach((t, i) => {
                     const card = document.createElement('div');
-                    card.className = "flex items-start gap-2 bg-dark-900 border border-dark-800 p-2 rounded-lg cursor-pointer hover:border-purple-500 transition-all";
+                    card.className = "flex items-start gap-2 bg-[#faf9f6] border border-[#e9ecef] p-2 rounded-lg cursor-pointer hover:border-[#b8955a] transition-all";
                     card.onclick = () => {
                         document.getElementById('input-topic').value = t;
                         showToast("Judul disalin!", "success");
                     };
                     card.innerHTML = `
-                        <span class="text-[9px] font-bold bg-purple-500/20 text-purple-400 px-1.5 py-0.5 rounded flex-shrink-0">${i+1}</span>
-                        <span class="text-[10px] md:text-xs text-white font-medium line-clamp-2">${t}</span>
+                        <span class="text-[9px] font-bold bg-[#f5f0e8] text-[#b8955a] px-1.5 py-0.5 rounded flex-shrink-0">${i+1}</span>
+                        <span class="text-[10px] md:text-xs text-[#212529] font-medium line-clamp-2">${t}</span>
                     `;
                     list.appendChild(card);
                 });
@@ -1145,18 +1179,18 @@
             cont.innerHTML = '';
             scenes.forEach((s, i) => {
                 const div = document.createElement('div');
-                div.className = 'p-3 md:p-4 bg-dark-950/60 border border-dark-800 rounded-xl space-y-2';
+                div.className = 'p-3 md:p-4 bg-[#faf9f6] border border-[#e9ecef] rounded-xl space-y-2';
                 div.innerHTML = `
-                    <div class="flex justify-between items-center border-b border-dark-800 pb-2">
-                        <span class="text-[10px] md:text-xs font-bold text-purple-400">ADEGAN ${s.scene}</span>
+                    <div class="flex justify-between items-center border-b border-[#e9ecef] pb-2">
+                        <span class="text-[10px] md:text-xs font-bold text-[#b8955a]">ADEGAN ${s.scene}</span>
                     </div>
                     <div>
-                        <label class="block text-[9px] text-slate-400 font-bold mb-1 uppercase">Narasi Suara</label>
-                        <textarea onchange="updateSceneText(${i}, 'narration', this.value)" class="w-full bg-dark-900 border border-dark-800 rounded-lg p-2 text-sm md:text-xs text-slate-200 resize-none h-14 md:h-16 focus:outline-none focus:border-purple-500">${s.narration}</textarea>
+                        <label class="block text-[9px] text-[#6c757d] font-bold mb-1 uppercase">Narasi Suara</label>
+                        <textarea onchange="updateSceneText(${i}, 'narration', this.value)" class="w-full bg-white border border-[#e9ecef] rounded-lg p-2 text-sm md:text-xs text-[#212529] resize-none h-14 md:h-16 focus:outline-none focus:border-[#b8955a]">${s.narration}</textarea>
                     </div>
                     <div>
-                        <label class="block text-[9px] text-slate-400 font-bold mb-1 uppercase">Visual Prompt</label>
-                        <input type="text" id="visual-prompt-input-${i}" onchange="updateSceneText(${i}, 'visualPrompt', this.value)" value="${s.visualPrompt}" class="w-full bg-dark-900 border border-dark-800 rounded-lg p-2 text-sm md:text-xs text-slate-300 focus:outline-none focus:border-purple-500">
+                        <label class="block text-[9px] text-[#6c757d] font-bold mb-1 uppercase">Visual Prompt</label>
+                        <input type="text" id="visual-prompt-input-${i}" onchange="updateSceneText(${i}, 'visualPrompt', this.value)" value="${s.visualPrompt}" class="w-full bg-white border border-[#e9ecef] rounded-lg p-2 text-sm md:text-xs text-[#212529] focus:outline-none focus:border-[#b8955a]">
                     </div>
                 `;
                 cont.appendChild(div);
@@ -1178,13 +1212,13 @@
             }
         }
 
-        // ===== FUNGSI DURASI AUDIO =====
+        // ===== FUNGSI DURASI AUDIO (dari lampiran 2) =====
         function calculateAudioDuration() {
             if (!generatedStory.scenes || generatedStory.scenes.length === 0) return 0;
-            
+
             let totalDuration = 0;
             perSceneDurations = [];
-            
+
             generatedStory.scenes.forEach((s, i) => {
                 const wordCount = s.narration.split(/\s+/).length;
                 let estimatedDuration = (wordCount * 0.3) + 0.8;
@@ -1193,7 +1227,7 @@
                 perSceneDurations[i] = estimatedDuration;
                 totalDuration += estimatedDuration;
             });
-            
+
             audioDurationTotal = totalDuration;
             return totalDuration;
         }
@@ -1202,7 +1236,7 @@
             const total = calculateAudioDuration();
             document.getElementById('total-duration-display').textContent = total.toFixed(1) + ' detik';
             if (generatedStory.scenes && generatedStory.scenes.length > 0) {
-                document.getElementById('scene-duration-display').textContent = 
+                document.getElementById('scene-duration-display').textContent =
                     (total / generatedStory.scenes.length).toFixed(1);
             }
             document.getElementById('render-audio-duration').textContent = total.toFixed(1) + 's';
@@ -1211,9 +1245,7 @@
 
         // ============================================================
 
-        // ===== FUNGSI AUDIO / TTS (DARI LAMPIRAN 2) =====
-
-        // 1. Fungsi untuk mengganti provider audio (WebSpeech atau Gemini)
+        // ----- Fungsi Audio / TTS (dari lampiran 1) -----
         function toggleAudioProvider() {
             const p = document.getElementById('audio-provider-select').value;
             document.getElementById('gemini-voices-div').classList.toggle('hidden', p !== 'gemini');
@@ -1226,7 +1258,6 @@
             }
         }
 
-        // 2. Fungsi untuk mengisi daftar suara WebSpeech
         function populateVoiceSelect() {
             const sel = document.getElementById('tts-voice-select');
             sel.innerHTML = '';
@@ -1239,23 +1270,22 @@
             });
         }
 
-        // 3. Fungsi untuk membangun daftar narasi di UI
         function buildVoiceList(scenes) {
             const c = document.getElementById('voice-narration-list');
             c.innerHTML = '';
             if (!scenes || scenes.length === 0) {
-                c.innerHTML = '<div class="text-center py-10 text-slate-500 text-xs">Buat naskah di Langkah 1 terlebih dahulu.</div>';
+                c.innerHTML = '<div class="text-center py-10 text-[#adb5bd] text-xs">Buat naskah di Langkah 1 terlebih dahulu.</div>';
                 return;
             }
             scenes.forEach((s, i) => {
                 const div = document.createElement('div');
-                div.className = 'p-3 bg-dark-950/40 border border-dark-800 rounded-xl flex items-center justify-between gap-3';
+                div.className = 'p-3 bg-[#faf9f6] border border-[#e9ecef] rounded-xl flex items-center justify-between gap-3';
                 div.innerHTML = `
                     <div class="flex-1 min-w-0">
-                        <span class="text-[9px] md:text-[10px] bg-purple-500/10 text-purple-400 px-1.5 py-0.5 rounded font-bold">Adegan ${s.scene}</span>
-                        <p class="text-[10px] md:text-xs text-slate-200 font-medium leading-relaxed mt-1 truncate md:whitespace-normal">${s.narration}</p>
+                        <span class="text-[9px] md:text-[10px] bg-[#f5f0e8] text-[#b8955a] px-1.5 py-0.5 rounded font-bold">Adegan ${s.scene}</span>
+                        <p class="text-[10px] md:text-xs text-[#212529] font-medium leading-relaxed mt-1 truncate md:whitespace-normal">${s.narration}</p>
                     </div>
-                    <button onclick="speakSingleNarration(${i})" class="flex-shrink-0 bg-dark-900 border border-dark-700 hover:border-purple-500 w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-purple-400">
+                    <button onclick="speakSingleNarration(${i})" class="flex-shrink-0 bg-white border border-[#e9ecef] hover:border-[#b8955a] w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-[#b8955a] shadow-sm">
                         <i class="fa-solid fa-volume-high text-xs md:text-sm"></i>
                     </button>
                 `;
@@ -1263,14 +1293,12 @@
             });
         }
 
-        // 4. Fungsi memutar satu narasi (WebSpeech)
         function speakSingleNarration(idx) {
             window.speechSynthesis.cancel();
             const s = generatedStory.scenes[idx];
             playWebSpeech(s.narration);
         }
 
-        // 5. Fungsi utama pemutar WebSpeech
         function playWebSpeech(txt) {
             const u = new SpeechSynthesisUtterance(txt);
             u.lang = 'id-ID';
@@ -1280,7 +1308,6 @@
             window.speechSynthesis.speak(u);
         }
 
-        // 6. Fungsi memutar semua narasi berurutan
         function playAllNarrations() {
             if (!generatedStory.scenes || generatedStory.scenes.length === 0) {
                 showToast("Buat naskah dulu!", "error");
@@ -1304,94 +1331,12 @@
             showToast("🔊 Memutar semua narasi", "info");
         }
 
-        // 7. Fungsi menghentikan semua suara
         function stopAllNarrations() {
             window.speechSynthesis.cancel();
             showToast("⏹️ Audio dihentikan", "info");
         }
 
-        // 8. Fungsi menghasilkan audio dengan Gemini TTS
-        async function getGeminiTTSAudio(idx, txt) {
-            if (geminiAudioCache[idx]) return geminiAudioCache[idx];
-            const v = document.getElementById('gemini-voice-select').value;
-            const payload = {
-                contents: [{ parts: [{ text: `Baca ekspresif: "${txt}"` }] }],
-                generationConfig: { 
-                    responseModalities: ["AUDIO"], 
-                    speechConfig: { 
-                        voiceConfig: { 
-                            prebuiltVoiceConfig: { voiceName: v } 
-                        } 
-                    } 
-                },
-                model: "models/gemini-2.5-flash-preview-tts"
-            };
-            const res = await callGeminiAPI("models/gemini-2.5-flash-preview-tts:generateContent", payload);
-            const part = res?.candidates?.[0]?.content?.parts?.[0];
-            const sampleRate = parseInt(part?.inlineData?.mimeType.match(/rate=(\d+)/)?.[1] || "24000");
-            const pcmData = base64ToArrayBuffer(part.inlineData.data);
-            const pcm16 = new Int16Array(pcmData);
-            geminiAudioCache[idx] = { pcm: pcm16, sampleRate: sampleRate };
-            return geminiAudioCache[idx];
-        }
-
-        // 9. Fungsi memanggil API Gemini
-        async function callGeminiAPI(endpoint, payload) {
-            const apiKey = document.getElementById('gemini-api-key').value.trim();
-            if (!apiKey) throw new Error('API Key Gemini tidak tersedia');
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/${endpoint}?key=${apiKey}`;
-            const maxRetries = 2;
-            let delay = 1000;
-            for (let i = 0; i <= maxRetries; i++) {
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    if (!response.ok) throw new Error(await response.text());
-                    return await response.json();
-                } catch (e) {
-                    if (i === maxRetries) throw e;
-                    await new Promise(r => setTimeout(r, delay));
-                    delay *= 1.5;
-                }
-            }
-        }
-
-        // 10. Fungsi konversi Base64 ke ArrayBuffer
-        function base64ToArrayBuffer(b64) {
-            const str = window.atob(b64);
-            const bytes = new Uint8Array(str.length);
-            for (let i = 0; i < str.length; i++) bytes[i] = str.charCodeAt(i);
-            return bytes.buffer;
-        }
-
-        // 11. Fungsi konversi PCM ke WAV
-        function pcmToWav(pcm16, sampleRate) {
-            const buf = new ArrayBuffer(44 + pcm16.length * 2);
-            const view = new DataView(buf);
-            const writeStr = (off, s) => { 
-                for (let i = 0; i < s.length; i++) view.setUint8(off + i, s.charCodeAt(i)); 
-            };
-            writeStr(0, 'RIFF');
-            view.setUint32(4, 36 + pcm16.length * 2, true);
-            writeStr(8, 'WAVE');
-            writeStr(12, 'fmt ');
-            view.setUint32(16, 16, true);
-            view.setUint16(20, 1, true);
-            view.setUint16(22, 1, true);
-            view.setUint32(24, sampleRate, true);
-            view.setUint32(28, sampleRate * 2, true);
-            view.setUint16(32, 2, true);
-            view.setUint16(34, 16, true);
-            writeStr(36, 'data');
-            view.setUint32(40, pcm16.length * 2, true);
-            for (let i = 0; i < pcm16.length; i++) view.setInt16(44 + i * 2, pcm16[i], true);
-            return new Blob([view], { type: 'audio/wav' });
-        }
-
-        // 12. Fungsi download semua audio (Gabungan)
+        // ===== DOWNLOAD AUDIO GABUNGAN (SEMUA NARASI) =====
         async function downloadAllAudio() {
             if (!generatedStory.scenes || generatedStory.scenes.length === 0) {
                 showToast("Buat naskah dulu!", "error");
@@ -1421,10 +1366,11 @@
                 return;
             }
 
-            // GEMINI TTS: unduh WAV gabungan
+            // --- GEMINI TTS: unduh WAV gabungan ---
             try {
                 showToast("🎵 Menggabungkan audio Gemini...", "info");
-                let sr = 24000, pcms = [];
+                let sr = 24000,
+                    pcms = [];
                 for (let i = 0; i < generatedStory.scenes.length; i++) {
                     try {
                         const d = await getGeminiTTSAudio(i, generatedStory.scenes[i].narration);
@@ -1462,7 +1408,7 @@
             }
         }
 
-        // 13. Fungsi download audio per adegan (ZIP)
+        // ===== DOWNLOAD AUDIO PER ADEGAN (ZIP) =====
         async function downloadAllAudioPerScene() {
             if (!generatedStory.scenes || generatedStory.scenes.length === 0) {
                 showToast("Buat naskah dulu!", "error");
@@ -1498,7 +1444,7 @@
                     return;
                 }
 
-                // Buat ZIP sederhana
+                // Buat ZIP sederhana (gunakan JSZip jika tersedia, atau download satu per satu)
                 if (typeof JSZip !== 'undefined') {
                     const zip = new JSZip();
                     files.forEach(f => {
@@ -1532,7 +1478,78 @@
             }
         }
 
-        // ----- Fungsi Visual (serentak) -----
+        async function getGeminiTTSAudio(idx, txt) {
+            if (geminiAudioCache[idx]) return geminiAudioCache[idx];
+            const v = document.getElementById('gemini-voice-select').value;
+            const payload = {
+                contents: [{ parts: [{ text: `Baca ekspresif: "${txt}"` }] }],
+                generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: v } } } },
+                model: "models/gemini-2.5-flash-preview-tts"
+            };
+            const res = await callGeminiAPI("models/gemini-2.5-flash-preview-tts:generateContent", payload);
+            const part = res?.candidates?.[0]?.content?.parts?.[0];
+            const sampleRate = parseInt(part?.inlineData?.mimeType.match(/rate=(\d+)/)?.[1] || "24000");
+            const pcmData = base64ToArrayBuffer(part.inlineData.data);
+            const pcm16 = new Int16Array(pcmData);
+            geminiAudioCache[idx] = { pcm: pcm16, sampleRate: sampleRate };
+            return geminiAudioCache[idx];
+        }
+
+        function base64ToArrayBuffer(b64) {
+            const str = window.atob(b64);
+            const bytes = new Uint8Array(str.length);
+            for (let i = 0; i < str.length; i++) bytes[i] = str.charCodeAt(i);
+            return bytes.buffer;
+        }
+
+        function pcmToWav(pcm16, sampleRate) {
+            const buf = new ArrayBuffer(44 + pcm16.length * 2);
+            const view = new DataView(buf);
+            const writeStr = (off, s) => { for (let i = 0; i < s.length; i++) view.setUint8(off + i, s.charCodeAt(i)); };
+            writeStr(0, 'RIFF');
+            view.setUint32(4, 36 + pcm16.length * 2, true);
+            writeStr(8, 'WAVE');
+            writeStr(12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, 1, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * 2, true);
+            view.setUint16(32, 2, true);
+            view.setUint16(34, 16, true);
+            writeStr(36, 'data');
+            view.setUint32(40, pcm16.length * 2, true);
+            for (let i = 0; i < pcm16.length; i++) view.setInt16(44 + i * 2, pcm16[i], true);
+            return new Blob([view], { type: 'audio/wav' });
+        }
+
+        async function callGeminiAPI(endpoint, payload) {
+            const apiKey = document.getElementById('gemini-api-key').value.trim();
+            if (!apiKey) throw new Error('API Key Gemini tidak tersedia');
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/${endpoint}?key=${apiKey}`;
+            const maxRetries = 2;
+            let delay = 1000;
+            for (let i = 0; i <= maxRetries; i++) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) throw new Error(await response.text());
+                    return await response.json();
+                } catch (e) {
+                    if (i === maxRetries) throw e;
+                    await new Promise(r => setTimeout(r, delay));
+                    delay *= 1.5;
+                }
+            }
+        }
+
+        // ============================================================
+        // 3. FUNGSI VISUAL – DIPERBAIKI DENGAN FLUX AI (Pollinations)
+        // ============================================================
+
         function initStylePresets() {
             const container = document.getElementById('stylePresetsContainer');
             container.innerHTML = '';
@@ -1540,11 +1557,11 @@
                 const styleObj = STYLE_PRESETS[key];
                 const btn = document.createElement('button');
                 btn.className =
-                    `p-3 rounded-xl border text-left transition-all flex flex-col gap-1 cursor-pointer ${key === activeStyle ? 'border-purple-500 bg-purple-500/10 shadow-[0_0_15px_rgba(108,92,231,0.15)]' : 'border-dark-800 bg-dark-950/60 hover:bg-dark-900/80'}`;
+                    `p-3 rounded-xl border text-left transition-all flex flex-col gap-1 cursor-pointer ${key === activeStyle ? 'border-[#b8955a] bg-[#f5f0e8] shadow-[0_0_15px_rgba(184,149,90,0.1)]' : 'border-[#e9ecef] bg-white hover:bg-[#faf9f6]'}`;
                 btn.onclick = () => { activeStyle = key;
                     initStylePresets();
                     showToast(`Gaya: "${styleObj.name}"`, "info"); };
-                btn.innerHTML = `<span class="text-xs font-bold text-slate-200">${styleObj.name}</span>`;
+                btn.innerHTML = `<span class="text-xs font-bold text-[#212529]">${styleObj.name}</span>`;
                 container.appendChild(btn);
             });
         }
@@ -1557,7 +1574,7 @@
             const grid = document.getElementById('visual-storyboard-grid');
             grid.innerHTML = '';
             if (!scenes || scenes.length === 0) {
-                grid.innerHTML = '<div class="col-span-2 text-center py-10 text-slate-500 text-xs">Silakan buat naskah terlebih dahulu.</div>';
+                grid.innerHTML = '<div class="col-span-2 text-center py-10 text-[#adb5bd] text-xs">Silakan buat naskah terlebih dahulu.</div>';
                 return;
             }
             const isV = document.querySelector('input[name="video-duration"]:checked').value === "short";
@@ -1565,7 +1582,7 @@
             const frameClass = isV ? "aspect-[9/16] w-[160px] md:w-[220px] mx-auto" : "aspect-video w-full";
             scenes.forEach((s, i) => {
                 const card = document.createElement('div');
-                card.className = 'glass-panel p-3 md:p-5 rounded-2xl border border-dark-800 space-y-3 flex flex-col justify-between';
+                card.className = 'card-white p-3 md:p-5 space-y-3 flex flex-col justify-between';
                 const enhancedPrompt = getEnhancedAestheticPrompt(s.visualPrompt);
                 const encodedPrompt = encodeURIComponent(enhancedPrompt);
                 const pUrl =
@@ -1573,30 +1590,30 @@
                 card.innerHTML = `
                     <div class="space-y-2">
                         <div class="flex justify-between items-center">
-                            <span class="text-[10px] md:text-xs font-bold text-purple-400">ADEGAN ${s.scene} - VISUAL</span>
-                            <span class="text-[9px] bg-dark-950 text-slate-400 px-2 py-0.5 rounded border border-dark-800 font-semibold italic">${ratioLabel}</span>
+                            <span class="text-[10px] md:text-xs font-bold text-[#b8955a]">ADEGAN ${s.scene} - VISUAL</span>
+                            <span class="text-[9px] bg-[#f8f9fa] text-[#6c757d] px-2 py-0.5 rounded border border-[#e9ecef] font-semibold italic">${ratioLabel}</span>
                         </div>
-                        <div class="relative ${frameClass} bg-dark-950 rounded-xl overflow-hidden border border-dark-800 flex items-center justify-center group shadow-inner">
-                            <div id="loading-spinner-${i}" class="absolute inset-0 flex flex-col items-center justify-center bg-dark-950/90 z-10 transition-opacity duration-300">
+                        <div class="relative ${frameClass} bg-[#f8f9fa] rounded-xl overflow-hidden border border-[#e9ecef] flex items-center justify-center group shadow-inner">
+                            <div id="loading-spinner-${i}" class="absolute inset-0 flex flex-col items-center justify-center bg-[#f8f9fa]/90 z-10 transition-opacity duration-300">
                                 <span class="loader mb-2"></span>
-                                <span class="text-[9px] text-purple-400 font-bold uppercase tracking-wider animate-pulse">Melukis dengan AI...</span>
+                                <span class="text-[9px] text-[#b8955a] font-bold uppercase tracking-wider animate-pulse">Melukis dengan AI...</span>
                             </div>
                             <img id="sc-img-${i}" src="${pUrl}" 
                                  onload="document.getElementById('loading-spinner-${i}').classList.add('opacity-0','pointer-events-none')" 
                                  onerror="handleImageError(this, ${s.scene}, ${isV})"
                                  class="w-full h-full object-cover select-none transition-all duration-500 group-hover:scale-105" 
                                  alt="Adegan ${s.scene}">
-                            <div class="absolute bottom-2 right-2 bg-black/80 border border-white/10 px-2 py-1 rounded text-[9px] text-white flex items-center gap-1 cursor-pointer hover:bg-black transition-all z-20" onclick="regenerateImage(${i})">
+                            <div class="absolute bottom-2 right-2 bg-white/90 backdrop-blur-sm border border-[#e9ecef] px-2 py-1 rounded text-[9px] text-[#212529] flex items-center gap-1 cursor-pointer hover:bg-white transition-all z-20 shadow-sm" onclick="regenerateImage(${i})">
                                 <i class="fa-solid fa-arrows-rotate"></i> Acak
                             </div>
                         </div>
                         <div class="space-y-1">
-                            <label class="block text-[9px] text-slate-400 font-bold uppercase">Prompt Gambar Aktif</label>
-                            <textarea id="visual-prompt-input-${i}" onchange="updateSceneText(${i}, 'visualPrompt', this.value)" class="w-full bg-dark-900 border border-dark-800 rounded-lg p-2 text-sm md:text-xs text-slate-300 resize-none h-16 focus:outline-none focus:border-purple-500">${s.visualPrompt}</textarea>
+                            <label class="block text-[9px] text-[#6c757d] font-bold uppercase">Prompt Gambar Aktif</label>
+                            <textarea id="visual-prompt-input-${i}" onchange="updateSceneText(${i}, 'visualPrompt', this.value)" class="w-full bg-[#f8f9fa] border border-[#e9ecef] rounded-lg p-2 text-sm md:text-xs text-[#212529] resize-none h-16 focus:outline-none focus:border-[#b8955a]">${s.visualPrompt}</textarea>
                         </div>
                     </div>
-                    <div class="pt-2 border-t border-dark-800/50">
-                        <button onclick="generateImageForScene(${i})" class="w-full bg-purple-600 hover:bg-purple-500 text-white py-2 rounded-xl text-[10px] md:text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md">
+                    <div class="pt-2 border-t border-[#e9ecef]/50">
+                        <button onclick="generateImageForScene(${i})" class="w-full bg-[#b8955a] hover:bg-[#a68247] text-white py-2 rounded-xl text-[10px] md:text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md">
                             <i class="fa-solid fa-wand-magic-sparkles"></i> Render Visual
                         </button>
                     </div>
@@ -1608,7 +1625,7 @@
         function handleImageError(imgEl, sceneNum, isVertical) {
             const w = isVertical ? 540 : 960;
             const h = isVertical ? 960 : 540;
-            imgEl.src = `https://placehold.co/${w}x${h}/0a0f1d/6c5ce7?text=Adegan+${sceneNum}`;
+            imgEl.src = `https://placehold.co/${w}x${h}/f8f9fa/b8955a?text=Adegan+${sceneNum}`;
         }
 
         function generateImageForScene(idx) {
@@ -1681,18 +1698,18 @@
             });
         }
 
-        // ----- Player & Render -----
+        // ----- Player & Render (dari lampiran 2) -----
         function adjustPlayerAspect() {
             const isV = document.querySelector('input[name="video-duration"]:checked').value === "short";
             const f = document.getElementById('player-outer-frame');
             if (isV) {
                 f.style.maxWidth = "280px";
                 f.className =
-                    "w-full bg-slate-950/80 rounded-3xl border-8 border-dark-800 overflow-hidden shadow-2xl relative aspect-[9/16]";
+                    "w-full bg-[#f8f9fa] rounded-3xl border-8 border-[#e9ecef] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.04)] relative aspect-[9/16]";
             } else {
                 f.style.maxWidth = "100%";
                 f.className =
-                    "w-full bg-slate-950/80 rounded-2xl border-4 border-dark-800 overflow-hidden shadow-2xl relative aspect-video";
+                    "w-full bg-[#f8f9fa] rounded-2xl border-4 border-[#e9ecef] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.04)] relative aspect-video";
             }
         }
 
@@ -1701,7 +1718,7 @@
             p.innerHTML = '';
             document.getElementById('player-scene-count-badge').innerText = `${scenes.length} Scene`;
             if (!scenes || scenes.length === 0) {
-                p.innerHTML = '<p class="text-xs text-slate-500 text-center py-4">Belum ada adegan.</p>';
+                p.innerHTML = '<p class="text-xs text-[#adb5bd] text-center py-4">Belum ada adegan.</p>';
                 return;
             }
             scenes.forEach((s, i) => {
@@ -1709,15 +1726,15 @@
                 const d = document.createElement('div');
                 d.id = `playlist-item-${i}`;
                 d.className =
-                    `p-2 rounded-lg border border-dark-800 hover:bg-dark-800/50 flex gap-2 cursor-pointer transition-all`;
+                    `p-2 rounded-lg border border-[#e9ecef] hover:bg-[#faf9f6] flex gap-2 cursor-pointer transition-all`;
                 d.onclick = () => selectVideoPlayerScene(i);
                 d.innerHTML = `
-                    <div class="w-12 h-8 md:w-16 md:h-10 bg-black flex-shrink-0">
+                    <div class="w-12 h-8 md:w-16 md:h-10 bg-[#f8f9fa] flex-shrink-0 rounded overflow-hidden">
                         <img src="${img ? img.src : ''}" class="w-full h-full object-cover">
                     </div>
                     <div class="min-w-0">
-                        <p class="text-[9px] text-purple-400 font-bold">Sc ${s.scene}</p>
-                        <p class="text-[10px] text-slate-300 truncate">${s.narration}</p>
+                        <p class="text-[9px] text-[#b8955a] font-bold">Sc ${s.scene}</p>
+                        <p class="text-[10px] text-[#495057] truncate">${s.narration}</p>
                     </div>
                 `;
                 p.appendChild(d);
@@ -1758,7 +1775,7 @@
 
         function resetRenderModalUI() {
             document.getElementById('render-action-buttons').innerHTML = `
-                <button onclick="cancelVideoRendering()" class="w-full bg-dark-800 hover:bg-dark-700 text-slate-400 py-3 rounded-xl text-xs font-bold">
+                <button onclick="cancelVideoRendering()" class="w-full bg-[#f8f9fa] hover:bg-[#e9ecef] text-[#6c757d] py-3 rounded-xl text-xs font-bold border border-[#e9ecef]">
                     Batalkan Export
                 </button>
             `;
@@ -1785,14 +1802,14 @@
             const filename = `Visual_${cTitle}.webm`;
             btnContainer.innerHTML = `
                 <div class="flex flex-col gap-2 w-full mt-2">
-                    <video src="${finalVideoBlobUrl}" controls loop autoplay class="w-full rounded-xl bg-black border border-dark-700" style="max-height: 160px; object-fit: contain;"></video>
-                    <p class="text-[9px] text-purple-400 mt-1 mb-2 font-bold bg-purple-500/10 p-2 rounded">
+                    <video src="${finalVideoBlobUrl}" controls loop autoplay class="w-full rounded-xl bg-[#f8f9fa] border border-[#e9ecef]" style="max-height: 160px; object-fit: contain;"></video>
+                    <p class="text-[9px] text-[#b8955a] mt-1 mb-2 font-bold bg-[#f5f0e8] p-2 rounded">
                         💡 Tips: Long press video → "Save Video"
                     </p>
-                    <button onclick="shareOrDownloadVideo('${filename}')" class="w-full btn-download text-white py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-lg">
+                    <button onclick="shareOrDownloadVideo('${filename}')" class="w-full btn-gold text-white py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-lg">
                         <i class="fa-solid fa-share-nodes"></i> Bagikan / Unduh
                     </button>
-                    <button onclick="closeRenderModal()" class="w-full bg-dark-800 text-slate-400 py-2.5 rounded-xl text-[10px] font-bold">Tutup</button>
+                    <button onclick="closeRenderModal()" class="w-full bg-[#f8f9fa] text-[#6c757d] py-2.5 rounded-xl text-[10px] font-bold border border-[#e9ecef]">Tutup</button>
                 </div>
             `;
         }
@@ -1815,58 +1832,55 @@
             document.body.removeChild(a);
         }
 
-        // ===== PROSES RENDER VIDEO =====
+        // ===== PROSES RENDER VIDEO (dari lampiran 2) =====
         async function startVideoRenderingProcess() {
             if (generatedStory.scenes.length === 0) {
                 return showToast("Buat naskah dulu!", "error");
             }
-            
-            // Hitung durasi audio terlebih dahulu
+
             const totalAudioDuration = calculateAudioDuration();
-            
+
             cancelRenderFlag = false;
             isCurrentlyRendering = true;
             recordedChunks = [];
             finalVideoBlobUrl = null;
             finalVideoBlob = null;
-            
+
             const modal = document.getElementById('rendering-modal');
             resetRenderModalUI();
             modal.classList.remove('hidden');
-            
-            // Tampilkan informasi durasi di modal
+
             document.getElementById('render-audio-duration').textContent = totalAudioDuration.toFixed(1) + 's';
             document.getElementById('render-video-duration').textContent = totalAudioDuration.toFixed(1) + 's';
-            
+
             updateRenderProgress(5, "LANGKAH 1/4 (MEMUAT)", "Memuat gambar ke memori...");
-            
-            // Preload semua gambar
+
             const preloadedImages = [];
             for (let i = 0; i < generatedStory.scenes.length; i++) {
                 if (cancelRenderFlag) return;
                 const imgCard = document.getElementById(`sc-img-${i}`);
-                const src = imgCard ? imgCard.src : `https://placehold.co/1280x720/0a0f1d/6c5ce7?text=A${i+1}`;
+                const src = imgCard ? imgCard.src : `https://placehold.co/1280x720/f8f9fa/b8955a?text=A${i+1}`;
                 const imgObj = new Image();
                 imgObj.crossOrigin = "anonymous";
                 imgObj.src = src;
-                await new Promise(r => { imgObj.onload = r; imgObj.onerror = r; });
+                await new Promise(r => { imgObj.onload = r;
+                    imgObj.onerror = r; });
                 preloadedImages.push(imgObj);
-                updateRenderProgress(5 + ((i + 1) / generatedStory.scenes.length) * 15, 
+                updateRenderProgress(5 + ((i + 1) / generatedStory.scenes.length) * 15,
                     "LANGKAH 1/4 (MEMUAT)",
                     `Memuat ${i+1}/${generatedStory.scenes.length}...`);
             }
-            
+
             if (cancelRenderFlag) return;
-            
+
             updateRenderProgress(20, "LANGKAH 2/4 (INISIALISASI)", "Menghangatkan kanvas...");
-            
+
             const isV = document.querySelector('input[name="video-duration"]:checked').value === "short";
             renderCanvas = document.getElementById('offscreen-render-canvas');
             renderCanvas.width = isV ? 720 : 1280;
             renderCanvas.height = isV ? 1280 : 720;
             renderCtx = renderCanvas.getContext('2d');
-            
-            // Setup MediaRecorder
+
             recordStream = renderCanvas.captureStream(30);
             let vOpts = { mimeType: 'video/webm;codecs=vp9' };
             if (!MediaRecorder.isTypeSupported(vOpts.mimeType)) {
@@ -1875,18 +1889,18 @@
             if (!MediaRecorder.isTypeSupported(vOpts.mimeType)) {
                 vOpts = { mimeType: 'video/webm' };
             }
-            
+
             try {
                 mediaRecorder = new MediaRecorder(recordStream, vOpts);
             } catch (e) {
                 showToast("Perekam tidak didukung.", "error");
                 return;
             }
-            
+
             mediaRecorder.ondataavailable = e => {
                 if (e.data && e.data.size > 0) recordedChunks.push(e.data);
             };
-            
+
             mediaRecorder.onstop = () => {
                 if (cancelRenderFlag) return;
                 updateRenderProgress(100, "LANGKAH 4/4 (SELESAI)", "Berkas final siap.");
@@ -1895,38 +1909,35 @@
                 showDownloadButtons();
                 showToast("Video Berhasil! Durasi: " + audioDurationTotal.toFixed(1) + " detik", "success");
             };
-            
+
             mediaRecorder.start();
             updateRenderProgress(25, "LANGKAH 3/4 (MEREKAM)", "Merekam video...");
-            
-            // Proses perekaman dengan durasi per scene dari perhitungan audio
+
             processSceneRekaman(0, preloadedImages, totalAudioDuration);
         }
 
         function processSceneRekaman(sIdx, preloadedImages, totalDuration) {
             if (cancelRenderFlag || !isCurrentlyRendering) return;
-            
+
             const tScenes = generatedStory.scenes.length;
             if (sIdx >= tScenes) {
                 mediaRecorder.stop();
                 return;
             }
-            
+
             const imgSource = preloadedImages[sIdx];
-            // Gunakan durasi yang sudah dihitung per scene
             const sceneDuration = perSceneDurations[sIdx] || 3.5;
-            
-            // Update progress
+
             const progressStart = 25;
             const progressEnd = 95;
             const currentProgress = progressStart + ((sIdx + 1) / tScenes) * (progressEnd - progressStart);
-            updateRenderProgress(currentProgress, 
-                `LANGKAH 3/4 (MEREKAM ${sIdx+1}/${tScenes})`, 
+            updateRenderProgress(currentProgress,
+                `LANGKAH 3/4 (MEREKAM ${sIdx+1}/${tScenes})`,
                 `Adegan ${sIdx+1}: ${sceneDuration.toFixed(1)} detik`);
-            
+
             let startT = performance.now();
-            const durationMs = sceneDuration * 1000; // Konversi ke milidetik
-            
+            const durationMs = sceneDuration * 1000;
+
             function renderFrame(time) {
                 if (cancelRenderFlag) {
                     mediaRecorder.stop();
@@ -1934,17 +1945,15 @@
                 }
                 const elapsed = time - startT;
                 if (elapsed >= durationMs) {
-                    // Lanjut ke scene berikutnya
                     processSceneRekaman(sIdx + 1, preloadedImages, totalDuration);
                     return;
                 }
-                
+
                 const cW = renderCanvas.width;
                 const cH = renderCanvas.height;
-                // Efek zoom lambat (ken burns effect)
                 const progress = elapsed / durationMs;
                 const scale = 1.0 + (0.06 * progress);
-                
+
                 renderCtx.clearRect(0, 0, cW, cH);
                 renderCtx.save();
                 renderCtx.translate(cW / 2, cH / 2);
@@ -1952,21 +1961,106 @@
                 renderCtx.translate(-cW / 2, -cH / 2);
                 renderCtx.drawImage(imgSource, 0, 0, cW, cH);
                 renderCtx.restore();
-                
-                // Opsional: tambahkan efek fade in/out halus di awal/akhir scene
+
                 if (progress < 0.05) {
                     const alpha = progress / 0.05;
-                    renderCtx.fillStyle = `rgba(0,0,0,${1-alpha})`;
+                    renderCtx.fillStyle = `rgba(255,255,255,${1-alpha})`;
                     renderCtx.fillRect(0, 0, cW, cH);
                 } else if (progress > 0.95) {
                     const alpha = (progress - 0.95) / 0.05;
-                    renderCtx.fillStyle = `rgba(0,0,0,${alpha})`;
+                    renderCtx.fillStyle = `rgba(255,255,255,${alpha})`;
                     renderCtx.fillRect(0, 0, cW, cH);
                 }
-                
+
                 requestAnimationFrame(renderFrame);
             }
             requestAnimationFrame(renderFrame);
+        }
+
+        // ===== DOWNLOAD AUDIO & VIDEO BERSAMAAN =====
+        async function downloadAudioAndVideoTogether() {
+            if (!finalVideoBlob) {
+                showToast("Render video terlebih dahulu!", "warn");
+                return;
+            }
+
+            try {
+                let audioBlob = audioBlobForDownload;
+
+                if (!audioBlob) {
+                    const provider = document.getElementById('audio-provider-select').value;
+                    if (provider === 'gemini') {
+                        showToast("🎵 Menyiapkan audio...", "info");
+                        let pcms = [];
+                        let sr = 24000;
+                        for (let i = 0; i < generatedStory.scenes.length; i++) {
+                            try {
+                                const d = await getGeminiTTSAudio(i, generatedStory.scenes[i].narration);
+                                if (d && d.pcm) {
+                                    pcms.push(d.pcm);
+                                    sr = d.sampleRate || 24000;
+                                }
+                            } catch (e) {}
+                        }
+                        if (pcms.length > 0) {
+                            const totalLength = pcms.reduce((sum, p) => sum + p.length, 0);
+                            const merged = new Int16Array(totalLength);
+                            let offset = 0;
+                            pcms.forEach(p => {
+                                merged.set(p, offset);
+                                offset += p.length;
+                            });
+                            audioBlob = pcmToWav(merged, sr);
+                            audioBlobForDownload = audioBlob;
+                        }
+                    } else {
+                        showToast("💡 Gunakan Gemini untuk audio WAV", "info");
+                        return;
+                    }
+                }
+
+                if (!audioBlob) {
+                    showToast("⚠️ Audio tidak tersedia. Render ulang dengan Gemini.", "error");
+                    return;
+                }
+
+                if (typeof JSZip !== 'undefined') {
+                    const zip = new JSZip();
+                    const cTitle = generatedStory.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').substring(0, 30) || 'video';
+                    zip.file(`${cTitle}.webm`, finalVideoBlob);
+                    zip.file(`${cTitle}.wav`, audioBlob);
+                    const zipBlob = await zip.generateAsync({ type: 'blob' });
+                    const url = URL.createObjectURL(zipBlob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${cTitle}_Video_Audio.zip`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    showToast("✅ Video dan Audio berhasil diunduh sebagai ZIP!", "success");
+                } else {
+                    const urlVideo = URL.createObjectURL(finalVideoBlob);
+                    const a1 = document.createElement('a');
+                    a1.href = urlVideo;
+                    a1.download = `Video_${Date.now()}.webm`;
+                    document.body.appendChild(a1);
+                    a1.click();
+                    document.body.removeChild(a1);
+
+                    setTimeout(() => {
+                        const urlAudio = URL.createObjectURL(audioBlob);
+                        const a2 = document.createElement('a');
+                        a2.href = urlAudio;
+                        a2.download = `Audio_${Date.now()}.wav`;
+                        document.body.appendChild(a2);
+                        a2.click();
+                        document.body.removeChild(a2);
+                        showToast("✅ Video dan Audio diunduh terpisah!", "success");
+                    }, 500);
+                }
+            } catch (e) {
+                showToast(`⚠️ Gagal: ${e.message}`, "error");
+            }
         }
 
         // ----- Switch Tab -----
@@ -1979,11 +2073,9 @@
                 const target = tabId.split('-')[1];
                 const btnTarget = id.split('-')[1];
                 if (btnTarget === target) {
-                    btn.className =
-                        "flex-shrink-0 w-auto md:w-full flex items-center gap-2 md:gap-3 px-4 py-2.5 md:py-3 rounded-xl transition-all text-xs md:text-sm font-semibold text-left text-purple-400 bg-purple-500/10 border border-purple-500/30";
+                    btn.className = "nav-item active flex-shrink-0 w-auto md:w-full flex items-center gap-2 md:gap-3";
                 } else {
-                    btn.className =
-                        "flex-shrink-0 w-auto md:w-full flex items-center gap-2 md:gap-3 px-4 py-2.5 md:py-3 rounded-xl text-slate-400 hover:bg-dark-800/50 hover:text-white transition-all text-xs md:text-sm font-semibold text-left border border-transparent";
+                    btn.className = "nav-item flex-shrink-0 w-auto md:w-full flex items-center gap-2 md:gap-3";
                 }
             });
         }
@@ -2007,8 +2099,12 @@
             if (savedGemini) {
                 document.getElementById('gemini-api-key').value = savedGemini;
             }
-            console.log("🎬 Studio Konten Pro v2.1 - Full Version siap.");
+            console.log("🎬 Studio Konten Pro v2.1 - White Edition siap.");
         }
+    </script>
+
+    <!-- Load JSZip untuk ZIP support (dari CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js">
     </script>
 </body>
 </html>
