@@ -26,7 +26,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #fdfcf8; color: #212529; min-height: 100vh; overflow: hidden; }
 
-        /* SPLASH */
         #splashOverlay {
             position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center;
             background: rgba(253,252,248,0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -99,6 +98,10 @@
         .btn-download:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(34,197,94,0.3); }
         .btn-gold { background: linear-gradient(135deg, #b8955a, #c9a96e); transition: all 0.3s; color: #fff; }
         .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(184,149,90,0.3); }
+        .btn-outline-gold { background: transparent; border: 2px solid #b8955a; color: #b8955a; transition: all 0.3s; }
+        .btn-outline-gold:hover { background: #b8955a; color: #fff; }
+        .btn-danger-outline { background: transparent; border: 2px solid #ef4444; color: #ef4444; transition: all 0.3s; }
+        .btn-danger-outline:hover { background: #ef4444; color: #fff; }
 
         #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 99999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; width: 100%; max-width: 380px; margin-left: auto; }
         .toast-item { pointer-events: auto; padding: 12px 18px; border-radius: 14px; background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); border: 1px solid rgba(0,0,0,0.06); color: #212529; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); transform: translateX(calc(100% + 30px)); opacity: 0; transition: all 0.4s cubic-bezier(0.16,1,0.3,1); }
@@ -116,10 +119,6 @@
         .password-toggle { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #adb5bd; cursor: pointer; background: none; border: none; font-size: 16px; }
         .password-toggle:hover { color: #b8955a; }
 
-        .progress-ring { transform: rotate(-90deg); }
-        .progress-ring circle { transition: stroke-dashoffset 0.35s; }
-
-        /* Sidebar putih elegan */
         .sidebar-white { background: #ffffff; border-right: 1px solid #e9ecef; }
         .nav-item { transition: all 0.2s; border-radius: 12px; padding: 10px 16px; font-weight: 600; font-size: 13px; color: #6c757d; border: 1px solid transparent; }
         .nav-item:hover { background: #f8f9fa; color: #212529; }
@@ -134,13 +133,13 @@
         .select-white:focus { border-color: #b8955a; box-shadow: 0 0 0 4px rgba(184,149,90,0.08); }
         .badge-gold { background: #f5f0e8; color: #b8955a; padding: 2px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* Wave bar untuk audio */
-        .wave-bar { animation: quiet 1.2s ease-in-out infinite alternate; }
-        .wave-bar:nth-child(2n) { animation-duration: 0.8s; }
-        .wave-bar:nth-child(3n) { animation-duration: 1.4s; }
-        .wave-bar.active { animation-name: loud; }
-        @keyframes quiet { 0% { height: 4px; } 100% { height: 16px; } }
-        @keyframes loud { 0% { height: 8px; } 100% { height: 45px; } }
+        .audio-progress { height: 4px; background: #e9ecef; border-radius: 4px; overflow: hidden; }
+        .audio-progress .bar { height: 100%; background: linear-gradient(90deg, #b8955a, #c9a96e); transition: width 0.3s; }
+
+        .badge-webspeech { background: #e8f5e9; color: #2e7d32; padding: 2px 10px; border-radius: 12px; font-size: 9px; font-weight: 600; }
+        .badge-gemini { background: #e3f2fd; color: #0d47a1; padding: 2px 10px; border-radius: 12px; font-size: 9px; font-weight: 600; }
+        
+        .auto-save-badge { background: #e8f5e9; color: #2e7d32; padding: 2px 10px; border-radius: 12px; font-size: 8px; font-weight: 600; letter-spacing: 0.3px; }
     </style>
 </head>
 <body>
@@ -188,7 +187,7 @@
     <!-- MAIN APP -->
     <div id="mainApp" class="flex flex-col md:flex-row h-screen w-full overflow-hidden select-none">
 
-        <!-- SIDEBAR PUTIH ELEGAN -->
+        <!-- SIDEBAR -->
         <aside class="sidebar-white w-full md:w-64 flex flex-col z-20 flex-shrink-0">
             <div class="p-4 md:p-5 border-b border-[#e9ecef] flex items-center justify-between md:justify-start gap-3">
                 <div class="flex items-center gap-3">
@@ -209,14 +208,11 @@
                 <button onclick="switchTab('tab-ideasi')" id="nav-ideasi" class="nav-item active flex-shrink-0 w-auto md:w-full flex items-center gap-2 md:gap-3">
                     <i class="fa-solid fa-lightbulb w-4 md:w-5 text-center text-sm md:text-base"></i> 1. Ide & Naskah
                 </button>
-                <button onclick="switchTab('tab-suara')" id="nav-suara" class="nav-item flex-shrink-0 w-auto md:w-full flex items-center gap-2 md:gap-3">
-                    <i class="fa-solid fa-microphone-lines w-4 md:w-5 text-center text-sm md:text-base"></i> 2. Suara TTS
-                </button>
                 <button onclick="switchTab('tab-visual')" id="nav-visual" class="nav-item flex-shrink-0 w-auto md:w-full flex items-center gap-2 md:gap-3">
-                    <i class="fa-solid fa-image w-4 md:w-5 text-center text-sm md:text-base"></i> 3. Storyboard
+                    <i class="fa-solid fa-image w-4 md:w-5 text-center text-sm md:text-base"></i> 2. Storyboard
                 </button>
                 <button onclick="switchTab('tab-render')" id="nav-render" class="nav-item flex-shrink-0 w-auto md:w-full flex items-center gap-2 md:gap-3">
-                    <i class="fa-solid fa-film w-4 md:w-5 text-center text-sm md:text-base"></i> 4. Render Video
+                    <i class="fa-solid fa-film w-4 md:w-5 text-center text-sm md:text-base"></i> 3. Render Video
                 </button>
             </nav>
 
@@ -282,6 +278,9 @@
                     <span class="hidden md:flex bg-[#f5f0e8] border border-[#e8e0d0] text-[#b8955a] px-3.5 py-1.5 rounded-full text-xs font-semibold items-center gap-1.5">
                         <i class="fa-solid fa-circle-nodes"></i> by Kreatorpedia
                     </span>
+                    <span class="auto-save-badge hidden md:flex items-center gap-1">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Auto-Save
+                    </span>
                     <button onclick="logoutApp()" class="text-[#6c757d] hover:text-[#212529] text-sm transition-all hidden md:block" title="Logout">
                         <i class="fa-solid fa-sign-out-alt"></i>
                     </button>
@@ -290,8 +289,9 @@
 
             <div class="p-4 md:p-8 max-w-5xl mx-auto pb-24 w-full flex-1">
 
-                <!-- TAB 1: Ideasi -->
+                <!-- TAB 1: Ideasi + TTS -->
                 <section id="tab-ideasi" class="tab-content active space-y-4 md:space-y-6">
+                    <!-- Riset Judul -->
                     <div class="card-white p-4 md:p-6 space-y-4">
                         <div class="flex flex-col md:flex-row gap-3">
                             <input type="text" id="input-research-topic" placeholder="Contoh: rahasia gunung padang..." class="input-white">
@@ -307,6 +307,7 @@
                         </div>
                     </div>
 
+                    <!-- Pengaturan Naskah -->
                     <div class="card-white p-4 md:p-6 space-y-5">
                         <div class="flex flex-col gap-3">
                             <span class="text-[10px] md:text-xs font-bold text-[#6c757d] uppercase tracking-wider">Format Konten Video</span>
@@ -362,7 +363,9 @@
                         </div>
                     </div>
 
+                    <!-- METADATA & SKRIP + TTS -->
                     <div id="metadata-container" class="space-y-4 md:space-y-6 hidden">
+                        <!-- Metadata SEO -->
                         <div class="card-white p-4 md:p-6 relative overflow-hidden">
                             <div class="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#b8955a] to-transparent opacity-50"></div>
                             <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-3">
@@ -388,16 +391,76 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- SKRIP NARASI dengan TTS -->
                         <div class="card-white p-4 md:p-6 flex flex-col">
                             <div class="flex justify-between items-center mb-4">
                                 <h4 class="text-sm font-bold text-[#212529] flex items-center gap-2">
-                                    <i class="fa-solid fa-file-invoice text-[#b8955a]"></i> Skrip Narasi (JSON)
+                                    <i class="fa-solid fa-file-invoice text-[#b8955a]"></i> Skrip Narasi
                                 </h4>
                                 <span id="out-scenes-count" class="badge-gold">0 Adegan</span>
                             </div>
+
+                            <!-- Pilihan TTS & Kontrol -->
+                            <div class="flex flex-wrap items-center gap-4 mb-4 p-3 bg-[#faf9f6] rounded-xl border border-[#e9ecef]">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold text-[#6c757d] uppercase">🎙️ Suara:</span>
+                                    <select id="audio-provider-select" onchange="toggleAudioProvider()" class="select-white text-sm w-auto py-1">
+                                        <option value="webspeech" selected>Lokal (WebSpeech) 📝</option>
+                                        <option value="gemini">Gemini TTS 🎵</option>
+                                    </select>
+                                </div>
+                                <div id="gemini-voices-div" class="hidden flex items-center gap-2">
+                                    <span class="text-[10px] font-bold text-[#6c757d] uppercase">Voice:</span>
+                                    <select id="gemini-voice-select" class="select-white text-sm w-auto py-1">
+                                        <option value="Zephyr">Zephyr</option>
+                                        <option value="Puck">Puck</option>
+                                        <option value="Charon">Charon</option>
+                                        <option value="Kore">Kore</option>
+                                    </select>
+                                </div>
+                                <div id="webspeech-voices-div" class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold text-[#6c757d] uppercase">Voice:</span>
+                                    <select id="tts-voice-select" class="select-white text-sm w-auto py-1"></select>
+                                </div>
+                                <div class="flex items-center gap-2 ml-auto">
+                                    <button onclick="playAllNarrations()" class="bg-[#22c55e] hover:bg-[#16a34a] text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5">
+                                        <i class="fa-solid fa-play"></i> Putar Semua
+                                    </button>
+                                    <button onclick="stopAllNarrations()" class="bg-[#f8f9fa] hover:bg-[#e9ecef] text-[#495057] px-3 py-1.5 rounded-lg text-xs font-bold border border-[#e9ecef] transition-all flex items-center gap-1.5">
+                                        <i class="fa-solid fa-stop"></i> Henti
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Info Provider -->
+                            <div class="mb-3 text-[10px] text-[#6c757d] flex items-center gap-2">
+                                <i class="fa-solid fa-info-circle"></i>
+                                <span id="provider-info-text">📝 WebSpeech: Download sebagai file teks (.txt) - Gratis</span>
+                            </div>
+
+                            <!-- Daftar Narasi per Adegan -->
                             <div id="script-scenes-editor" class="space-y-4 max-h-96 overflow-y-auto pr-1"></div>
-                            <div class="mt-4 pt-4 border-t border-[#e9ecef] flex justify-end">
-                                <button onclick="switchTab('tab-suara')" class="btn-gold text-white px-5 py-3 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2">
+
+                            <!-- Tombol Download -->
+                            <div class="mt-4 pt-4 border-t border-[#e9ecef] flex flex-wrap gap-3">
+                                <button onclick="downloadAllAudioPerScene()" id="btn-download-per-scene" class="bg-[#f8f9fa] hover:bg-[#e9ecef] text-[#495057] px-5 py-2.5 rounded-xl text-xs font-bold border border-[#e9ecef] transition-all flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-download"></i> <span id="download-per-scene-label">Download Per Adegan (TXT)</span>
+                                </button>
+                                <button onclick="downloadAllNarasiAsStory()" class="btn-outline-gold px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-file-lines"></i> Download Teks Cerita
+                                </button>
+                            </div>
+                            <div id="download-progress-container" class="mt-2 hidden">
+                                <div class="audio-progress">
+                                    <div id="download-progress-bar" class="bar" style="width:0%"></div>
+                                </div>
+                                <p id="download-progress-text" class="text-[10px] text-[#6c757d] mt-1">Memproses...</p>
+                            </div>
+
+                            <div class="mt-4 pt-4 border-t border-[#e9ecef] flex justify-between">
+                                <span id="download-hint" class="text-[9px] text-[#6c757d]"></span>
+                                <button onclick="switchTab('tab-visual')" class="btn-gold text-white px-5 py-3 rounded-xl text-sm font-bold flex items-center gap-2 ml-auto">
                                     Lanjut Langkah 2 <i class="fa-solid fa-arrow-right"></i>
                                 </button>
                             </div>
@@ -405,73 +468,7 @@
                     </div>
                 </section>
 
-                <!-- TAB 2: Suara (dari lampiran 1) -->
-                <section id="tab-suara" class="tab-content space-y-4 md:space-y-6">
-                    <div class="card-white p-4 md:p-6 space-y-6">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#e9ecef] pb-4">
-                            <div>
-                                <h3 class="text-sm md:text-base font-bold text-[#212529]">Langkah 2: Narasi & TTS</h3>
-                                <p class="text-[10px] md:text-xs text-[#6c757d]">Konversi teks menjadi suara realistis.</p>
-                            </div>
-                            <div class="grid grid-cols-2 md:flex items-center gap-3">
-                                <div class="col-span-2 md:col-span-1">
-                                    <label class="block text-[10px] font-bold text-[#6c757d] uppercase mb-1">Penyedia Audio</label>
-                                    <select id="audio-provider-select" onchange="toggleAudioProvider()" class="select-white text-sm md:text-xs w-full md:w-auto">
-                                        <option value="webspeech" selected>Lokal (WebSpeech - Gratis)</option>
-                                        <option value="gemini">Gemini Premium (TTS)</option>
-                                    </select>
-                                </div>
-                                <div id="gemini-voices-div" class="hidden col-span-2 md:col-span-1">
-                                    <label class="block text-[10px] font-bold text-[#6c757d] uppercase mb-1">Suara Gemini</label>
-                                    <select id="gemini-voice-select" class="select-white text-sm md:text-xs w-full md:w-auto">
-                                        <option value="Zephyr">Zephyr (Bright)</option>
-                                        <option value="Puck">Puck (Upbeat)</option>
-                                        <option value="Charon">Charon (Informative)</option>
-                                        <option value="Kore">Kore (Firm)</option>
-                                    </select>
-                                </div>
-                                <div id="webspeech-voices-div" class="col-span-2 md:col-span-1">
-                                    <label class="block text-[10px] font-bold text-[#6c757d] uppercase mb-1">Suara Lokal</label>
-                                    <select id="tts-voice-select" class="select-white text-sm md:text-xs w-full md:w-auto"></select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="md:col-span-1 space-y-4">
-                                <div class="bg-[#faf9f6] p-4 md:p-5 rounded-2xl border border-[#e9ecef]">
-                                    <div class="space-y-3">
-                                        <button onclick="playAllNarrations()" class="w-full bg-[#22c55e] hover:bg-[#16a34a] text-white py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2">
-                                            <i class="fa-solid fa-play animate-pulse"></i> Putar Semua
-                                        </button>
-                                        <button onclick="stopAllNarrations()" class="w-full bg-[#f8f9fa] hover:bg-[#e9ecef] text-[#495057] py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border border-[#e9ecef]">
-                                            <i class="fa-solid fa-stop"></i> Henti
-                                        </button>
-                                    </div>
-                                    <div class="mt-4 pt-4 border-t border-[#e9ecef] flex flex-col gap-2">
-                                        <button onclick="downloadAllAudio()" id="btn-download-audio" class="w-full btn-download text-white py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-lg">
-                                            <i class="fa-solid fa-download"></i> Unduh Semua Suara (Gabungan)
-                                        </button>
-                                        <button onclick="downloadAllAudioPerScene()" id="btn-download-audio-per-scene" class="w-full bg-[#f8f9fa] hover:bg-[#e9ecef] text-[#495057] py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 border border-[#e9ecef] transition-all">
-                                            <i class="fa-solid fa-download"></i> Unduh Per Adegan (ZIP)
-                                        </button>
-                                        <p id="download-hint" class="text-[8px] text-[#eab308] text-center mt-1 hidden">💡 Dengan WebSpeech, unduh sebagai teks (.txt). Pilih Gemini untuk file WAV.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="md:col-span-2 space-y-3 max-h-[350px] overflow-y-auto pr-1" id="voice-narration-list">
-                                <div class="text-center py-10 text-[#adb5bd] text-xs">Buat naskah di Langkah 1 terlebih dahulu.</div>
-                            </div>
-                        </div>
-                        <div class="mt-2 pt-4 border-t border-[#e9ecef] flex justify-between items-center">
-                            <button onclick="switchTab('tab-ideasi')" class="text-[#6c757d] text-xs font-bold"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
-                            <button onclick="switchTab('tab-visual')" class="btn-gold text-white px-5 py-3 rounded-xl text-sm font-bold flex items-center gap-2">
-                                Lanjut Langkah 3 <i class="fa-solid fa-arrow-right"></i>
-                            </button>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- TAB 3: Visual (diperbaiki dengan Flux AI) -->
+                <!-- TAB 2: Visual / Storyboard -->
                 <section id="tab-visual" class="tab-content space-y-4 md:space-y-6">
                     <div class="card-white p-4 md:p-6 space-y-4 overflow-x-auto">
                         <h3 class="text-xs font-bold text-[#6c757d] flex items-center gap-2 uppercase tracking-wider mb-2">
@@ -482,7 +479,7 @@
                     <div class="card-white p-4 md:p-6 space-y-5">
                         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#e9ecef] pb-4">
                             <div>
-                                <h3 class="text-sm md:text-base font-bold text-[#212529]">Langkah 3: Visualisasi Adegan</h3>
+                                <h3 class="text-sm md:text-base font-bold text-[#212529]">Langkah 2: Visualisasi Adegan</h3>
                             </div>
                             <div class="flex flex-col md:flex-row items-stretch md:items-center gap-3">
                                 <select id="image-model-select" class="select-white text-sm md:text-xs">
@@ -498,15 +495,15 @@
                             <div class="col-span-2 text-center py-10 text-[#adb5bd] text-xs">Silakan buat naskah terlebih dahulu.</div>
                         </div>
                         <div class="mt-2 pt-4 border-t border-[#e9ecef] flex justify-between items-center">
-                            <button onclick="switchTab('tab-suara')" class="text-[#6c757d] text-xs font-bold"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
+                            <button onclick="switchTab('tab-ideasi')" class="text-[#6c757d] text-xs font-bold"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
                             <button onclick="switchTab('tab-render')" class="btn-gold text-white px-5 py-3 rounded-xl text-sm font-bold flex items-center gap-2">
-                                Langkah 4: Render <i class="fa-solid fa-arrow-right"></i>
+                                Langkah 3: Render <i class="fa-solid fa-arrow-right"></i>
                             </button>
                         </div>
                     </div>
                 </section>
 
-                <!-- TAB 4: Render -->
+                <!-- TAB 3: Render -->
                 <section id="tab-render" class="tab-content space-y-4 md:space-y-6">
                     <div class="card-white p-4 md:p-6 space-y-5">
                         <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-[#e9ecef] pb-4 gap-4">
@@ -576,10 +573,14 @@
                             </div>
                         </div>
 
-                        <!-- Tombol Download Audio & Video Bersamaan -->
-                        <div class="border-t border-[#e9ecef] pt-4 flex flex-wrap gap-3 justify-center md:justify-end">
-                            <button onclick="downloadAudioAndVideoTogether()" class="btn-gold text-white px-6 py-3 rounded-xl text-sm font-bold transition-all shadow-lg flex items-center gap-2">
-                                <i class="fa-solid fa-download"></i> Download Audio & Video
+                        <div class="border-t border-[#e9ecef] pt-4 flex flex-wrap gap-3 justify-between items-center">
+                            <div class="flex flex-wrap gap-3">
+                                <button onclick="downloadAudioAndVideoTogether()" class="btn-gold text-white px-6 py-3 rounded-xl text-sm font-bold transition-all shadow-lg flex items-center gap-2">
+                                    <i class="fa-solid fa-download"></i> Download Audio & Video
+                                </button>
+                            </div>
+                            <button onclick="resetAllWork()" class="btn-danger-outline px-5 py-3 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-arrow-rotate-left"></i> Buat Lembar Kerja Baru
                             </button>
                         </div>
                     </div>
@@ -632,7 +633,7 @@
     <canvas id="offscreen-render-canvas" class="hidden"></canvas>
 
     <!-- ========================================================== -->
-    <!-- JAVASCRIPT LENGKAP (gabungan: UI+TTS dari lampiran 1, sisanya dari lampiran 2, visual diperbaiki) -->
+    <!-- JAVASCRIPT LENGKAP -->
     <!-- ========================================================== -->
     <script>
         // ============================================================
@@ -790,7 +791,7 @@
         }
 
         // ============================================================
-        // 2. APLIKASI – SEMUA FITUR (gabungan)
+        // 2. APLIKASI – SEMUA FITUR
         // ============================================================
 
         let generatedStory = { title: "", description: "", hashtags: "", scenes: [] };
@@ -808,9 +809,10 @@
         let finalVideoBlob = null;
         let audioBlobForDownload = null;
 
-        // VARIABEL DURASI AUDIO
         let audioDurationTotal = 0;
         let perSceneDurations = [];
+
+        const STORAGE_KEY = 'studio_konten_work_data';
 
         const STYLE_PRESETS = {
             realisticPhoto: { name: "📷 Realistik Fotografi", promptAddon: "Ultra realistic photography, photorealistic, 8k resolution, highly detailed, professional cinematography, cinematic lighting, depth of field, real life, lifelike textures, natural lighting, sharp focus, award winning photography." },
@@ -822,6 +824,155 @@
             watercolor: { name: "🖌️ Watercolor Concept", promptAddon: "Fine artistic ink outlines combined with fluid watercolor wash textures, beautiful abstract bleeding pigments, cinematic layout painting, soft dreamlike color grading." },
             cinematicFilm: { name: "🎬 Cinematic Film", promptAddon: "Cinematic film still, 35mm photography, anamorphic lens, epic movie scene, highly detailed, dramatic color grading, theatrical lighting, masterpiece, deep shadows, bright highlights." }
         };
+
+        // ----- AUTO-SAVE FUNCTIONS -----
+        function autoSaveWork() {
+            try {
+                const data = {
+                    generatedStory: generatedStory,
+                    activeStyle: activeStyle,
+                    audioProvider: document.getElementById('audio-provider-select')?.value || 'webspeech',
+                    geminiVoice: document.getElementById('gemini-voice-select')?.value || 'Zephyr',
+                    videoDuration: document.querySelector('input[name="video-duration"]:checked')?.value || 'short',
+                    targetScenes: document.getElementById('target-scenes-count-select')?.value || '12',
+                    contentLanguage: document.getElementById('content-language-select')?.value || 'id',
+                    topic: document.getElementById('input-topic')?.value || '',
+                    researchTopic: document.getElementById('input-research-topic')?.value || '',
+                    timestamp: Date.now()
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            } catch (e) {
+                console.log('Auto-save error:', e);
+            }
+        }
+
+        function autoLoadWork() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return false;
+                const data = JSON.parse(raw);
+                if (!data.generatedStory || !data.generatedStory.scenes || data.generatedStory.scenes.length === 0) {
+                    return false;
+                }
+                return data;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function loadSavedWork() {
+            const data = autoLoadWork();
+            if (!data) return false;
+
+            try {
+                // Restore generated story
+                generatedStory = data.generatedStory;
+                
+                // Restore style
+                if (data.activeStyle && STYLE_PRESETS[data.activeStyle]) {
+                    activeStyle = data.activeStyle;
+                }
+                
+                // Restore UI settings
+                const audioProvider = document.getElementById('audio-provider-select');
+                if (audioProvider && data.audioProvider) {
+                    audioProvider.value = data.audioProvider;
+                    toggleAudioProvider();
+                }
+                
+                const geminiVoice = document.getElementById('gemini-voice-select');
+                if (geminiVoice && data.geminiVoice) {
+                    geminiVoice.value = data.geminiVoice;
+                }
+                
+                const durationRadios = document.querySelectorAll('input[name="video-duration"]');
+                durationRadios.forEach(r => {
+                    r.checked = r.value === (data.videoDuration || 'short');
+                });
+                adjustPlayerAspect();
+                
+                const targetScenes = document.getElementById('target-scenes-count-select');
+                if (targetScenes && data.targetScenes) {
+                    targetScenes.value = data.targetScenes;
+                }
+                
+                const contentLang = document.getElementById('content-language-select');
+                if (contentLang && data.contentLanguage) {
+                    contentLang.value = data.contentLanguage;
+                }
+                
+                if (data.topic) {
+                    document.getElementById('input-topic').value = data.topic;
+                }
+                if (data.researchTopic) {
+                    document.getElementById('input-research-topic').value = data.researchTopic;
+                }
+                
+                // Render the loaded story
+                renderOutputStory(generatedStory);
+                initStylePresets();
+                
+                // Rebuild everything
+                buildSceneEditor(generatedStory.scenes);
+                buildStoryboardGrid(generatedStory.scenes);
+                buildRenderPlaylist(generatedStory.scenes);
+                document.getElementById('metadata-container').classList.remove('hidden');
+                updateDurationDisplay();
+                updateDownloadLabels();
+                
+                showToast(`✅ Pekerjaan dimuat kembali! (${generatedStory.scenes.length} adegan)`, "success");
+                return true;
+            } catch (e) {
+                console.log('Load error:', e);
+                return false;
+            }
+        }
+
+        // ----- RESET / LEMBAR KERJA BARU -----
+        function resetAllWork() {
+            if (generatedStory.scenes && generatedStory.scenes.length > 0) {
+                if (!confirm('⚠️ Buat lembar kerja baru akan menghapus semua data saat ini. Lanjutkan?')) {
+                    return;
+                }
+            }
+            
+            // Reset data
+            generatedStory = { title: "", description: "", hashtags: "", scenes: [] };
+            geminiAudioCache = {};
+            finalVideoBlobUrl = null;
+            finalVideoBlob = null;
+            audioBlobForDownload = null;
+            
+            // Reset UI
+            document.getElementById('out-title').value = '';
+            document.getElementById('out-desc').value = '';
+            document.getElementById('out-tags').value = '';
+            document.getElementById('out-scenes-count').innerText = '0 Adegan';
+            document.getElementById('metadata-container').classList.add('hidden');
+            document.getElementById('script-scenes-editor').innerHTML = '';
+            document.getElementById('visual-storyboard-grid').innerHTML = 
+                '<div class="col-span-2 text-center py-10 text-[#adb5bd] text-xs">Silakan buat naskah terlebih dahulu.</div>';
+            document.getElementById('player-scene-playlist').innerHTML = 
+                '<p class="text-xs text-[#adb5bd] text-center py-4">Belum ada adegan.</p>';
+            document.getElementById('player-scene-count-badge').innerText = '0 Scene';
+            
+            // Reset durasi
+            audioDurationTotal = 0;
+            perSceneDurations = [];
+            document.getElementById('total-duration-display').textContent = '0 detik';
+            document.getElementById('render-audio-duration').textContent = '0s';
+            document.getElementById('render-video-duration').textContent = '0s';
+            
+            // Hapus data tersimpan
+            try {
+                localStorage.removeItem(STORAGE_KEY);
+            } catch (e) {}
+            
+            showToast('🔄 Lembar kerja baru siap!', 'info');
+            
+            // Switch ke tab 1
+            switchTab('tab-ideasi');
+        }
 
         // ----- Fungsi API dan utilitas -----
         function showToast(message, type = 'success') {
@@ -879,7 +1030,6 @@
             return null;
         }
 
-        // ===== API KEY FUNCTIONS =====
         const FALLBACK_MODELS = [
             { id: 'openrouter/free', label: 'openrouter/free' },
             { id: 'deepseek/deepseek-r1:free', label: 'deepseek-r1:free' },
@@ -1050,7 +1200,7 @@
             }
         }
 
-        // ----- Fungsi Riset & Naskah (dari lampiran 2) -----
+        // ----- Fungsi Riset & Naskah -----
         async function researchProfessionalTitles() {
             const rawTopic = document.getElementById('input-research-topic').value.trim();
             if (!rawTopic) return showToast("Masukkan topik riset terlebih dahulu!", "error");
@@ -1081,6 +1231,7 @@
                     card.onclick = () => {
                         document.getElementById('input-topic').value = t;
                         showToast("Judul disalin!", "success");
+                        autoSaveWork();
                     };
                     card.innerHTML = `
                         <span class="text-[9px] font-bold bg-[#f5f0e8] text-[#b8955a] px-1.5 py-0.5 rounded flex-shrink-0">${i+1}</span>
@@ -1090,6 +1241,7 @@
                 });
                 document.getElementById('titles-recommendation-container').classList.remove('hidden');
                 showToast(`${titles.length} Judul berhasil diriset!`, "success");
+                autoSaveWork();
             } catch (e) {
                 showToast(`Gagal riset: ${e.message}`, "error");
             } finally {
@@ -1134,6 +1286,7 @@
                 geminiAudioCache = {};
                 renderOutputStory(generatedStory);
                 showToast(`Naskah ${generatedStory.scenes.length} adegan berhasil dibuat!`, "success");
+                autoSaveWork();
             } catch (e) {
                 generatedStory = {
                     title: "Misteri Tersembunyi",
@@ -1148,6 +1301,7 @@
                 };
                 renderOutputStory(generatedStory);
                 showToast(`Naskah menggunakan template lokal: ${e.message}`, "warn");
+                autoSaveWork();
             } finally {
                 btn.querySelector('span').innerText = origText;
                 btn.disabled = false;
@@ -1160,11 +1314,12 @@
             document.getElementById('out-tags').value = parsed.hashtags || '#video';
             document.getElementById('out-scenes-count').innerText = `${parsed.scenes.length} Adegan`;
             buildSceneEditor(parsed.scenes);
-            buildVoiceList(parsed.scenes);
             buildStoryboardGrid(parsed.scenes);
             buildRenderPlaylist(parsed.scenes);
             document.getElementById('metadata-container').classList.remove('hidden');
             updateDurationDisplay();
+            updateDownloadLabels();
+            autoSaveWork();
         }
 
         function copyMetadata() {
@@ -1174,15 +1329,48 @@
             navigator.clipboard.writeText(txt).then(() => showToast("Metadata Disalin!", "success"));
         }
 
+        // ===== UPDATE LABEL DOWNLOAD =====
+        function updateDownloadLabels() {
+            const provider = document.getElementById('audio-provider-select').value;
+            const isGemini = provider === 'gemini';
+            const labelPerScene = document.getElementById('download-per-scene-label');
+            const infoText = document.getElementById('provider-info-text');
+
+            if (isGemini) {
+                labelPerScene.textContent = 'Download Per Adegan (WAV)';
+                infoText.innerHTML = '🎵 Gemini TTS: Download sebagai file audio WAV - Premium';
+            } else {
+                labelPerScene.textContent = 'Download Per Adegan (TXT)';
+                infoText.innerHTML = '📝 WebSpeech: Download sebagai file teks (.txt) - Gratis';
+            }
+        }
+
+        // ===== BUILD SCENE EDITOR =====
         function buildSceneEditor(scenes) {
             const cont = document.getElementById('script-scenes-editor');
             cont.innerHTML = '';
+            if (!scenes || scenes.length === 0) {
+                cont.innerHTML = '<div class="text-center py-10 text-[#adb5bd] text-xs">Buat naskah terlebih dahulu.</div>';
+                return;
+            }
+            const provider = document.getElementById('audio-provider-select').value;
+            const isGemini = provider === 'gemini';
+
             scenes.forEach((s, i) => {
                 const div = document.createElement('div');
                 div.className = 'p-3 md:p-4 bg-[#faf9f6] border border-[#e9ecef] rounded-xl space-y-2';
+                const downloadLabel = isGemini ? 'Download Audio' : 'Download Teks';
                 div.innerHTML = `
-                    <div class="flex justify-between items-center border-b border-[#e9ecef] pb-2">
+                    <div class="flex justify-between items-center border-b border-[#e9ecef] pb-2 flex-wrap gap-2">
                         <span class="text-[10px] md:text-xs font-bold text-[#b8955a]">ADEGAN ${s.scene}</span>
+                        <div class="flex gap-2 flex-wrap">
+                            <button onclick="speakSingleNarration(${i})" class="bg-white border border-[#e9ecef] hover:border-[#b8955a] px-3 py-1 rounded-full text-xs text-[#b8955a] flex items-center gap-1 shadow-sm">
+                                <i class="fa-solid fa-volume-high"></i> Putar
+                            </button>
+                            <button onclick="downloadSingle(${i})" class="bg-white border border-[#e9ecef] hover:border-[#22c55e] px-3 py-1 rounded-full text-xs text-[#22c55e] flex items-center gap-1 shadow-sm">
+                                <i class="fa-solid fa-download"></i> ${downloadLabel}
+                            </button>
+                        </div>
                     </div>
                     <div>
                         <label class="block text-[9px] text-[#6c757d] font-bold mb-1 uppercase">Narasi Suara</label>
@@ -1201,7 +1389,6 @@
             if (generatedStory.scenes[idx]) {
                 generatedStory.scenes[idx][prop] = val;
                 if (prop === 'narration') {
-                    buildVoiceList(generatedStory.scenes);
                     delete geminiAudioCache[idx];
                     updateDurationDisplay();
                 }
@@ -1209,10 +1396,11 @@
                     buildStoryboardGrid(generatedStory.scenes);
                 }
                 buildRenderPlaylist(generatedStory.scenes);
+                autoSaveWork();
             }
         }
 
-        // ===== FUNGSI DURASI AUDIO (dari lampiran 2) =====
+        // ===== FUNGSI DURASI AUDIO =====
         function calculateAudioDuration() {
             if (!generatedStory.scenes || generatedStory.scenes.length === 0) return 0;
 
@@ -1243,19 +1431,24 @@
             document.getElementById('render-video-duration').textContent = total.toFixed(1) + 's';
         }
 
-        // ============================================================
-
-        // ----- Fungsi Audio / TTS (dari lampiran 1) -----
+        // ===== FUNGSI AUDIO / TTS =====
         function toggleAudioProvider() {
             const p = document.getElementById('audio-provider-select').value;
             document.getElementById('gemini-voices-div').classList.toggle('hidden', p !== 'gemini');
             document.getElementById('webspeech-voices-div').classList.toggle('hidden', p === 'gemini');
             const hint = document.getElementById('download-hint');
             if (p === 'webspeech') {
+                hint.textContent = '💡 WebSpeech: Download narasi sebagai file teks (.txt)';
                 hint.classList.remove('hidden');
             } else {
-                hint.classList.add('hidden');
+                hint.textContent = '🎵 Gemini TTS: Download narasi sebagai file audio WAV';
+                hint.classList.remove('hidden');
             }
+            updateDownloadLabels();
+            if (generatedStory.scenes && generatedStory.scenes.length > 0) {
+                buildSceneEditor(generatedStory.scenes);
+            }
+            autoSaveWork();
         }
 
         function populateVoiceSelect() {
@@ -1267,29 +1460,6 @@
                 o.textContent = `${v.name} (${v.lang})`;
                 if (v.lang.includes('id-ID')) o.selected = true;
                 sel.appendChild(o);
-            });
-        }
-
-        function buildVoiceList(scenes) {
-            const c = document.getElementById('voice-narration-list');
-            c.innerHTML = '';
-            if (!scenes || scenes.length === 0) {
-                c.innerHTML = '<div class="text-center py-10 text-[#adb5bd] text-xs">Buat naskah di Langkah 1 terlebih dahulu.</div>';
-                return;
-            }
-            scenes.forEach((s, i) => {
-                const div = document.createElement('div');
-                div.className = 'p-3 bg-[#faf9f6] border border-[#e9ecef] rounded-xl flex items-center justify-between gap-3';
-                div.innerHTML = `
-                    <div class="flex-1 min-w-0">
-                        <span class="text-[9px] md:text-[10px] bg-[#f5f0e8] text-[#b8955a] px-1.5 py-0.5 rounded font-bold">Adegan ${s.scene}</span>
-                        <p class="text-[10px] md:text-xs text-[#212529] font-medium leading-relaxed mt-1 truncate md:whitespace-normal">${s.narration}</p>
-                    </div>
-                    <button onclick="speakSingleNarration(${i})" class="flex-shrink-0 bg-white border border-[#e9ecef] hover:border-[#b8955a] w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-[#b8955a] shadow-sm">
-                        <i class="fa-solid fa-volume-high text-xs md:text-sm"></i>
-                    </button>
-                `;
-                c.appendChild(div);
             });
         }
 
@@ -1336,79 +1506,65 @@
             showToast("⏹️ Audio dihentikan", "info");
         }
 
-        // ===== DOWNLOAD AUDIO GABUNGAN (SEMUA NARASI) =====
-        async function downloadAllAudio() {
-            if (!generatedStory.scenes || generatedStory.scenes.length === 0) {
-                showToast("Buat naskah dulu!", "error");
-                return;
-            }
-
-            const provider = document.getElementById('audio-provider-select').value;
-
-            if (provider === 'webspeech') {
-                try {
-                    const texts = generatedStory.scenes.map((s, i) =>
-                        `Adegan ${i+1}: ${s.narration}`
-                    );
-                    const content = `=== NARASI VIDEO ===\n\nJudul: ${generatedStory.title || 'Tanpa Judul'}\n\n${texts.join('\n\n')}`;
-                    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `Narasi_${Date.now()}.txt`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    showToast("✅ Teks narasi berhasil diunduh (.txt)", "success");
-                } catch (e) {
-                    showToast(`❌ Gagal unduh teks: ${e.message}`, "error");
-                }
-                return;
-            }
-
-            // --- GEMINI TTS: unduh WAV gabungan ---
-            try {
-                showToast("🎵 Menggabungkan audio Gemini...", "info");
-                let sr = 24000,
-                    pcms = [];
-                for (let i = 0; i < generatedStory.scenes.length; i++) {
-                    try {
-                        const d = await getGeminiTTSAudio(i, generatedStory.scenes[i].narration);
-                        if (d && d.pcm) {
-                            pcms.push(d.pcm);
-                            sr = d.sampleRate || 24000;
-                        }
-                    } catch (e) {
-                        console.warn(`Gemini gagal untuk scene ${i+1}, skip`, e);
-                    }
-                }
-                if (pcms.length === 0) {
-                    showToast('⚠️ Gemini gagal untuk semua scene. Periksa API Key atau coba lagi.', 'error');
-                    return;
-                }
-                const totalLength = pcms.reduce((sum, p) => sum + p.length, 0);
-                const merged = new Int16Array(totalLength);
-                let offset = 0;
-                pcms.forEach(p => {
-                    merged.set(p, offset);
-                    offset += p.length;
-                });
-                const audioBlob = pcmToWav(merged, sr);
-                audioBlobForDownload = audioBlob;
-                const url = URL.createObjectURL(audioBlob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `Audio_Narasi_${Date.now()}.wav`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                showToast("✅ Audio WAV gabungan berhasil diunduh!", "success");
-            } catch (e) {
-                showToast(`⚠️ Gemini gagal: ${e.message}`, 'error');
+        // ===== FUNGSI DOWNLOAD =====
+        function showDownloadProgress(show, percent = 0, text = '') {
+            const container = document.getElementById('download-progress-container');
+            const bar = document.getElementById('download-progress-bar');
+            const label = document.getElementById('download-progress-text');
+            if (show) {
+                container.classList.remove('hidden');
+                bar.style.width = percent + '%';
+                label.textContent = text || `Memproses ${Math.round(percent)}%...`;
+            } else {
+                container.classList.add('hidden');
             }
         }
 
-        // ===== DOWNLOAD AUDIO PER ADEGAN (ZIP) =====
+        // DOWNLOAD SINGLE (per adegan)
+        async function downloadSingle(idx) {
+            const s = generatedStory.scenes[idx];
+            if (!s) return;
+
+            const provider = document.getElementById('audio-provider-select').value;
+
+            if (provider === 'gemini') {
+                showDownloadProgress(true, 10, `Memproses Adegan ${s.scene}...`);
+                try {
+                    const result = await getGeminiTTSAudio(idx, s.narration);
+                    if (result && result.pcm) {
+                        const audioBlob = pcmToWav(result.pcm, result.sampleRate || 24000);
+                        const url = URL.createObjectURL(audioBlob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `Narasi_Adegan_${s.scene}.wav`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        setTimeout(() => URL.revokeObjectURL(url), 5000);
+                        showDownloadProgress(false);
+                        showToast(`✅ Audio Adegan ${s.scene} berhasil diunduh!`, "success");
+                    } else {
+                        throw new Error('Gagal menghasilkan audio');
+                    }
+                } catch (e) {
+                    showDownloadProgress(false);
+                    showToast(`⚠️ Gagal: ${e.message}`, "error");
+                }
+            } else {
+                const content = s.narration;
+                const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Narasi_Adegan_${s.scene}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                showToast(`✅ Teks Adegan ${s.scene} berhasil diunduh!`, "success");
+            }
+        }
+
+        // DOWNLOAD PER SCENE
         async function downloadAllAudioPerScene() {
             if (!generatedStory.scenes || generatedStory.scenes.length === 0) {
                 showToast("Buat naskah dulu!", "error");
@@ -1417,73 +1573,134 @@
 
             const provider = document.getElementById('audio-provider-select').value;
 
-            if (provider === 'webspeech') {
-                showToast("💡 WebSpeech hanya mendukung unduh teks. Gunakan Gemini untuk audio WAV per scene.", "warn");
-                return;
-            }
+            if (provider === 'gemini') {
+                showDownloadProgress(true, 5, 'Memproses audio...');
+                try {
+                    const audioBlobs = [];
 
-            try {
-                showToast("🎵 Mengunduh audio per scene...", "info");
-                const files = [];
-                for (let i = 0; i < generatedStory.scenes.length; i++) {
-                    try {
-                        const d = await getGeminiTTSAudio(i, generatedStory.scenes[i].narration);
-                        if (d && d.pcm) {
-                            const blob = pcmToWav(d.pcm, d.sampleRate || 24000);
-                            files.push({
-                                name: `Adegan_${i+1}.wav`,
-                                blob: blob
+                    for (let i = 0; i < generatedStory.scenes.length; i++) {
+                        const s = generatedStory.scenes[i];
+                        const progress = 10 + (i / generatedStory.scenes.length) * 70;
+                        showDownloadProgress(true, progress, `Memproses Adegan ${s.scene} (${i+1}/${generatedStory.scenes.length})...`);
+
+                        const result = await getGeminiTTSAudio(i, s.narration);
+                        if (result && result.pcm) {
+                            const audioBlob = pcmToWav(result.pcm, result.sampleRate || 24000);
+                            audioBlobs.push({
+                                name: `Adegan_${s.scene}.wav`,
+                                blob: audioBlob
                             });
                         }
-                    } catch (e) {
-                        console.warn(`Gagal scene ${i+1}`, e);
                     }
-                }
-                if (files.length === 0) {
-                    showToast('⚠️ Tidak ada audio yang berhasil digenerate.', 'error');
-                    return;
-                }
 
-                // Buat ZIP sederhana (gunakan JSZip jika tersedia, atau download satu per satu)
+                    if (audioBlobs.length === 0) {
+                        throw new Error('Tidak ada audio yang berhasil diproses');
+                    }
+
+                    showDownloadProgress(true, 85, 'Menyiapkan file...');
+
+                    if (typeof JSZip !== 'undefined') {
+                        const zip = new JSZip();
+                        audioBlobs.forEach(f => {
+                            zip.file(f.name, f.blob);
+                        });
+                        const zipBlob = await zip.generateAsync({ type: 'blob' });
+                        const url = URL.createObjectURL(zipBlob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        const title = generatedStory.title || 'audio';
+                        a.download = `${title.replace(/[^a-z0-9]/gi, '_')}_audio_per_adegan.zip`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        setTimeout(() => URL.revokeObjectURL(url), 5000);
+                        showToast(`✅ ${audioBlobs.length} file audio diunduh sebagai ZIP!`, "success");
+                    } else {
+                        for (const f of audioBlobs) {
+                            const url = URL.createObjectURL(f.blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = f.name;
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                            await new Promise(r => setTimeout(r, 300));
+                        }
+                        showToast(`✅ ${audioBlobs.length} file audio diunduh!`, "success");
+                    }
+                    showDownloadProgress(false);
+
+                } catch (e) {
+                    showDownloadProgress(false);
+                    showToast(`⚠️ Gagal: ${e.message}`, "error");
+                }
+            } else {
+                const files = generatedStory.scenes.map((s, i) => ({
+                    name: `Adegan_${s.scene}.txt`,
+                    content: s.narration
+                }));
+
                 if (typeof JSZip !== 'undefined') {
                     const zip = new JSZip();
                     files.forEach(f => {
-                        zip.file(f.name, f.blob);
+                        zip.file(f.name, f.content);
                     });
                     const zipBlob = await zip.generateAsync({ type: 'blob' });
                     const url = URL.createObjectURL(zipBlob);
                     const a = document.createElement('a');
                     a.href = url;
-                    a.download = `Audio_Per_Adegan_${Date.now()}.zip`;
+                    const title = generatedStory.title || 'narasi';
+                    a.download = `${title.replace(/[^a-z0-9]/gi, '_')}_narasi_per_adegan.zip`;
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
-                    showToast(`✅ ${files.length} file audio diunduh sebagai ZIP!`, "success");
+                    showToast(`✅ ${files.length} file teks diunduh sebagai ZIP!`, "success");
                 } else {
-                    // Fallback: download satu per satu
-                    for (let i = 0; i < files.length; i++) {
-                        const url = URL.createObjectURL(files[i].blob);
+                    for (const f of files) {
+                        const blob = new Blob([f.content], { type: 'text/plain;charset=utf-8' });
+                        const url = URL.createObjectURL(blob);
                         const a = document.createElement('a');
                         a.href = url;
-                        a.download = files[i].name;
+                        a.download = f.name;
                         document.body.appendChild(a);
                         a.click();
                         document.body.removeChild(a);
                         await new Promise(r => setTimeout(r, 300));
                     }
-                    showToast(`✅ ${files.length} file audio diunduh!`, "success");
+                    showToast(`✅ ${files.length} file teks diunduh!`, "success");
                 }
-            } catch (e) {
-                showToast(`⚠️ Gagal: ${e.message}`, 'error');
             }
         }
 
+        // DOWNLOAD TEKS CERITA UTUH
+        function downloadAllNarasiAsStory() {
+            if (!generatedStory.scenes || generatedStory.scenes.length === 0) {
+                showToast("Buat naskah dulu!", "error");
+                return;
+            }
+            const fullStory = generatedStory.scenes.map(s => s.narration).join(' ');
+            const blob = new Blob([fullStory], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const title = generatedStory.title || 'cerita';
+            a.download = `${title.replace(/[^a-z0-9]/gi, '_')}_cerita_utuh.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showToast("✅ Teks cerita utuh berhasil diunduh!", "success");
+        }
+
+        // ===== GEMINI TTS HELPER =====
         async function getGeminiTTSAudio(idx, txt) {
             if (geminiAudioCache[idx]) return geminiAudioCache[idx];
             const v = document.getElementById('gemini-voice-select').value;
             const payload = {
                 contents: [{ parts: [{ text: `Baca ekspresif: "${txt}"` }] }],
-                generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: v } } } },
+                generationConfig: {
+                    responseModalities: ["AUDIO"],
+                    speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: v } } }
+                },
                 model: "models/gemini-2.5-flash-preview-tts"
             };
             const res = await callGeminiAPI("models/gemini-2.5-flash-preview-tts:generateContent", payload);
@@ -1523,6 +1740,48 @@
             return new Blob([view], { type: 'audio/wav' });
         }
 
+        function audioDataToWav(audioData, sampleRate) {
+            const numChannels = 1;
+            const bitsPerSample = 16;
+            const bytesPerSample = bitsPerSample / 8;
+            const blockAlign = numChannels * bytesPerSample;
+            const byteRate = sampleRate * blockAlign;
+            const dataSize = audioData.length * bytesPerSample;
+            const headerSize = 44;
+            const totalSize = headerSize + dataSize;
+
+            const buffer = new ArrayBuffer(totalSize);
+            const view = new DataView(buffer);
+
+            writeString(view, 0, 'RIFF');
+            view.setUint32(4, totalSize - 8, true);
+            writeString(view, 8, 'WAVE');
+            writeString(view, 12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, numChannels, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, byteRate, true);
+            view.setUint16(32, blockAlign, true);
+            view.setUint16(34, bitsPerSample, true);
+            writeString(view, 36, 'data');
+            view.setUint32(40, dataSize, true);
+
+            for (let i = 0; i < audioData.length; i++) {
+                const sample = Math.max(-1, Math.min(1, audioData[i]));
+                const intSample = Math.round(sample * 32767);
+                view.setInt16(headerSize + i * bytesPerSample, intSample, true);
+            }
+
+            return buffer;
+        }
+
+        function writeString(view, offset, string) {
+            for (let i = 0; i < string.length; i++) {
+                view.setUint8(offset + i, string.charCodeAt(i));
+            }
+        }
+
         async function callGeminiAPI(endpoint, payload) {
             const apiKey = document.getElementById('gemini-api-key').value.trim();
             if (!apiKey) throw new Error('API Key Gemini tidak tersedia');
@@ -1547,7 +1806,7 @@
         }
 
         // ============================================================
-        // 3. FUNGSI VISUAL – DIPERBAIKI DENGAN FLUX AI (Pollinations)
+        // 3. FUNGSI VISUAL
         // ============================================================
 
         function initStylePresets() {
@@ -1560,7 +1819,8 @@
                     `p-3 rounded-xl border text-left transition-all flex flex-col gap-1 cursor-pointer ${key === activeStyle ? 'border-[#b8955a] bg-[#f5f0e8] shadow-[0_0_15px_rgba(184,149,90,0.1)]' : 'border-[#e9ecef] bg-white hover:bg-[#faf9f6]'}`;
                 btn.onclick = () => { activeStyle = key;
                     initStylePresets();
-                    showToast(`Gaya: "${styleObj.name}"`, "info"); };
+                    showToast(`Gaya: "${styleObj.name}"`, "info");
+                    autoSaveWork(); };
                 btn.innerHTML = `<span class="text-xs font-bold text-[#212529]">${styleObj.name}</span>`;
                 container.appendChild(btn);
             });
@@ -1658,6 +1918,7 @@
                 if (spinner) spinner.classList.add('opacity-0', 'pointer-events-none');
                 showToast(`Gambar Adegan ${index+1} Berhasil!`, "success");
                 buildRenderPlaylist(generatedStory.scenes);
+                autoSaveWork();
             };
             tempImg.onerror = () => {
                 imgEl.classList.remove('opacity-40');
@@ -1683,6 +1944,7 @@
             const imgEl = document.getElementById(`sc-img-${index}`);
             imgEl.src = targetUrl;
             showToast(`Visual diacak (Seed #${seed})!`, "success");
+            autoSaveWork();
         }
 
         function generateAllImages() {
@@ -1698,7 +1960,7 @@
             });
         }
 
-        // ----- Player & Render (dari lampiran 2) -----
+        // ----- Player & Render -----
         function adjustPlayerAspect() {
             const isV = document.querySelector('input[name="video-duration"]:checked').value === "short";
             const f = document.getElementById('player-outer-frame');
@@ -1711,6 +1973,7 @@
                 f.className =
                     "w-full bg-[#f8f9fa] rounded-2xl border-4 border-[#e9ecef] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.04)] relative aspect-video";
             }
+            autoSaveWork();
         }
 
         function buildRenderPlaylist(scenes) {
@@ -1832,7 +2095,7 @@
             document.body.removeChild(a);
         }
 
-        // ===== PROSES RENDER VIDEO (dari lampiran 2) =====
+        // ===== PROSES RENDER VIDEO =====
         async function startVideoRenderingProcess() {
             if (generatedStory.scenes.length === 0) {
                 return showToast("Buat naskah dulu!", "error");
@@ -2014,7 +2277,7 @@
                             audioBlobForDownload = audioBlob;
                         }
                     } else {
-                        showToast("💡 Gunakan Gemini untuk audio WAV", "info");
+                        showToast("💡 Untuk audio WAV, pilih Gemini TTS", "info");
                         return;
                     }
                 }
@@ -2067,12 +2330,11 @@
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            const navIds = ['nav-ideasi', 'nav-suara', 'nav-visual', 'nav-render'];
+            const navIds = ['nav-ideasi', 'nav-visual', 'nav-render'];
+            const tabMap = { 'tab-ideasi': 'nav-ideasi', 'tab-visual': 'nav-visual', 'tab-render': 'nav-render' };
             navIds.forEach(id => {
                 const btn = document.getElementById(id);
-                const target = tabId.split('-')[1];
-                const btnTarget = id.split('-')[1];
-                if (btnTarget === target) {
+                if (id === tabMap[tabId]) {
                     btn.className = "nav-item active flex-shrink-0 w-auto md:w-full flex items-center gap-2 md:gap-3";
                 } else {
                     btn.className = "nav-item flex-shrink-0 w-auto md:w-full flex items-center gap-2 md:gap-3";
@@ -2099,11 +2361,18 @@
             if (savedGemini) {
                 document.getElementById('gemini-api-key').value = savedGemini;
             }
+            
+            // Coba muat pekerjaan tersimpan
+            const loaded = loadSavedWork();
+            if (!loaded) {
+                console.log("📝 Tidak ada pekerjaan tersimpan, mulai dari awal.");
+            }
+            
             console.log("🎬 Studio Konten Pro v2.1 - White Edition siap.");
         }
     </script>
 
-    <!-- Load JSZip untuk ZIP support (dari CDN) -->
+    <!-- Load JSZip untuk ZIP support -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js">
     </script>
 </body>
